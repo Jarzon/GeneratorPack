@@ -1,0 +1,9 @@
+{
+  "js": {
+    "files": {
+      "generator.js": [
+        "src/GeneratorPack/assets/js/generator.js"
+      ]
+    }
+  }
+}

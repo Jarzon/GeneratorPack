@@ -1,0 +1,19 @@
+{
+  "name": "jarzon/generatorpack",
+  "type": "project",
+  "description": "",
+  "authors": [
+    {
+    "name": "Jason Vaillancourt",
+    "email": "j@jasonvaillancourt.ca",
+    "homepage": "https://www.jasonvaillancourt.ca",
+    "role": "Developer"
+  }
+  ],
+  "autoload": {
+    "psr-4": { "GeneratorPack\\": "src/" }
+  },
+  "require": {
+    "php": ">=8.0.0"
+  }
+}
