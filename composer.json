@@ -1,7 +1,9 @@
 {
   "name": "jarzon/generatorpack",
   "type": "project",
+  "license": "MIT",
   "description": "",
+  "homepage": "https://github.com/jarzon/generatorpack",
   "authors": [
     {
     "name": "Jason Vaillancourt",
