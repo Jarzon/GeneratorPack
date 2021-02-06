@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Libellum\GeneratorPack\Form;
+namespace GeneratorPack\Form;
 
 use Jarzon\FormAbstract;
 

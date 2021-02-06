@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Libellum\GeneratorPack\Service;
+namespace GeneratorPack\Service;
 
 class File
 {

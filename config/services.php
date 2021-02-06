@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
-use Libellum\GeneratorPack\Controller\Generator;
-use Libellum\GeneratorPack\Service\File;
+use GeneratorPack\Controller\Generator;
+use GeneratorPack\Service\File;
 use Prim\Container;
 
 return [
