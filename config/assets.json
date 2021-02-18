@@ -2,7 +2,7 @@
   "js": {
     "files": {
       "generator.js": [
-        "src/GeneratorPack/assets/js/generator.js"
+        "vendor/jarzon/generatorpack/assets/js/generator.js"
       ]
     }
   }
