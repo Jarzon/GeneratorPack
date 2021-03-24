@@ -378,7 +378,7 @@ EOT);
         $controllerfile = "$controllerDir/Form.php";
 
         if(file_exists($controllerfile)) {
-            $controllerfile = "$this->packDir/{$this->entityName}Form.php";
+            $controllerfile = "$controllerDir/{$this->entityName}Form.php";
         }
 
         $this->createFile($controllerfile, <<<EOT
@@ -523,7 +523,7 @@ EOT;
         $controllerfile = "$controllerDir/Table.php";
 
         if(file_exists($controllerfile)) {
-            $controllerfile = "$this->packDir/{$this->entityName}Table.php";
+            $controllerfile = "$controllerDir/{$this->entityName}Table.php";
         }
 
         $this->createFile($controllerfile, $file);
