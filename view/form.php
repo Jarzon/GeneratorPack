@@ -45,7 +45,6 @@ $this->start('default'); ?>
             <hr class="separator">
 
             <?=$packForm('submit')->value('Save')->row?>
-        <a class="cancel_button" href="<?=cancel('/admin/generator')?>"><?=$_("cancel")?></a>
 
         <?=$packForm('/form')->row?>
     </div>
