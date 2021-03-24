@@ -299,21 +299,21 @@ EOT);
 use Prim\Container;
 
 use {$this->targetPackNamespace}\Form\\{$this->entityName}Form;
-use {$this->targetPackNamespace}\Controller\\{Table, Form, Actions};
+use {$this->targetPackNamespace}\Controller\\{{$this->entityName}Table, {$this->entityName}Form, {$this->entityName}Actions};
 
 return [
     {$this->entityName}Form::class => function(Container \$dic) {
         return [];
     },
 
-    Table::class => function(Container \$dic) {
+    {$this->entityName}Table::class => function(Container \$dic) {
         \$dic->get('userService')->verification();
 
         return [
             \$dic->model('{$this->pack['pack_name']}\\{$this->entityName}Model'),
         ];
     },
-    Form::class => function(Container \$dic) {
+    {$this->entityName}Form::class => function(Container \$dic) {
         \$dic->get('userService')->verification();
 
         return [
@@ -321,7 +321,7 @@ return [
             \$dic->form('{$this->pack['pack_name']}\\{$this->entityName}Form')
         ];
     },
-    Actions::class => function(Container \$dic) {
+    {$this->entityName}Actions::class => function(Container \$dic) {
         \$dic->get('userService')->verification();
 
         return [
