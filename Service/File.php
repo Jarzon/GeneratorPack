@@ -340,7 +340,7 @@ EOT);
         $controllerfile = "$controllerDir/Actions.php";
 
         if(file_exists($controllerfile)) {
-            $controllerfile = "$this->packDir/{$this->entityName}Actions.php";
+            $controllerfile = "$controllerDir/{$this->entityName}Actions.php";
         }
 
         $this->createFile($controllerfile, <<<EOT
@@ -660,7 +660,7 @@ EOT;
 
         $viewFile = "$modeDir/add.php";
 
-        if(file_exists($viewFile)) {
+        if(file_exists($viewFile) || file_exists("{$modeDir}/edit.php") || file_exists("{$modeDir}/form.php") || file_exists("{$modeDir}/index.php")) {
             $modeDir = "{$this->packDir}/view/{$this->entityNameLC}";
             $this->createDir($modeDir);
             $viewFile = "$modeDir/add.php";
