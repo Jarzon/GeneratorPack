@@ -10,18 +10,14 @@ use Prim\{View, AbstractController};
 
 class Generator extends AbstractController
 {
-    public PackForm $packForm;
-    public DataForm $dataForm;
-    public File $file;
-
-    public function __construct(View $view, array $options,
-                                PackForm $packForm, DataForm $dataForm, File $file)
-    {
+    public function __construct(
+        View $view,
+        array $options,
+        public PackForm $packForm,
+        public DataForm $dataForm,
+        public File $file
+    ) {
         parent::__construct($view, $options);
-
-        $this->packForm = $packForm;
-        $this->dataForm = $dataForm;
-        $this->file = $file;
     }
 
     public function index(): void

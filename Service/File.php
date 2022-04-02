@@ -62,6 +62,23 @@ class File
         }
     }
 
+    private function getColumnType(string $type, bool $isType = false): string
+    {
+        if (in_array($type, ['string', 'text', 'email', 'url', 'file', 'tel', 'hidden', 'color', 'password'])) {
+            $type = 'text';
+        } else if (in_array($type, ['number', 'float', 'range', 'currency'])) {
+            $type = $isType? 'Numerice' : 'number';
+        } else if (in_array($type, ['datetime', 'date', 'time'])) {
+            $type = 'date';
+        }
+
+        if($isType) {
+            $type = ucfirst($type);
+        }
+
+        return $type;
+    }
+
     public function generateEntity(): void
     {
         $entityDir = $this->packDir . '/Entity';
@@ -81,7 +98,8 @@ class {$this->entityName}Entity extends EntityBase
 EOT;
         // Proprieties
         foreach ($this->data as $row) {
-            $file .= "    public \${$row['name']};\n";
+            $type = $this->getColumnType($row['type'], true);
+            $file .= "    public {$type} \${$row['name']};\n";
         }
 
         $file .= "
@@ -91,18 +109,10 @@ EOT;
 
         \$this->table('{$this->entityNameLC}');
 
-    ";
+";
 
         foreach ($this->data as $row) {
-            $type = $row['type'];
-
-            if (in_array($type, ['string', 'text', 'email', 'url', 'file', 'tel', 'hidden', 'color', 'password'])) {
-                $type = 'text';
-            } else if (in_array($type, ['number', 'float', 'range', 'currency'])) {
-                $type = 'number';
-            } else if (in_array($type, ['datetime', 'date', 'time'])) {
-                $type = 'date';
-            }
+            $type = $this->getColumnType($row['type']);
 
             $file .= "        \$this->{$row['name']} = \$this->{$type}('{$row['name']}');\n";
         }
@@ -269,7 +279,7 @@ EOT;
         $this->createFile("$routingFile", <<<EOT
 <?php declare(strict_types=1);
 
-/** @var \$this Router */
+/** @var Router \$this */
 
 use Prim\Router;
 
@@ -299,7 +309,7 @@ EOT);
 use Prim\Container;
 
 use {$this->targetPackNamespace}\Form\\{$this->entityName}Form;
-use {$this->targetPackNamespace}\Controller\\{{$this->entityName}Table, {$this->entityName}Form, {$this->entityName}Actions};
+use {$this->targetPackNamespace}\Controller\\{{$this->entityName}Table, Form, {$this->entityName}Actions};
 
 return [
     {$this->entityName}Form::class => function(Container \$dic) {
@@ -307,14 +317,14 @@ return [
     },
 
     {$this->entityName}Table::class => function(Container \$dic) {
-        \$dic->get('userService')->verification();
+        \$dic->service('UserPack\User')->verification();
 
         return [
             \$dic->model('{$this->pack['pack_name']}\\{$this->entityName}Model'),
         ];
     },
     {$this->entityName}Form::class => function(Container \$dic) {
-        \$dic->get('userService')->verification();
+        \$dic->service('UserPack\User')->verification();
 
         return [
             \$dic->model('{$this->pack['pack_name']}\\{$this->entityName}Model'),
@@ -322,7 +332,7 @@ return [
         ];
     },
     {$this->entityName}Actions::class => function(Container \$dic) {
-        \$dic->get('userService')->verification();
+        \$dic->service('UserPack\User')->verification();
 
         return [
             \$dic->model('{$this->pack['pack_name']}\\{$this->entityName}Model')
@@ -354,14 +364,12 @@ use {$this->targetPackNamespace}\Model\\{$this->entityName}Model;
 
 class Actions extends AbstractController
 {
-    public \${$this->entityName}Model;
-
-    public function __construct(View \$view, array \$options,
-                                {$this->entityName}Model \${$this->entityName}Model)
+    public function __construct(
+        View \$view,
+        array \$options,
+        public {$this->entityName}Model \${$this->entityName}Model)
     {
         parent::__construct(\$view, \$options);
-
-        \$this->{$this->entityName}Model = \${$this->entityName}Model;
     }
 
     public function delete(int \${$this->entityNameLC}Id)
@@ -394,16 +402,13 @@ use {$this->targetPackNamespace}\Model\\{$this->entityName}Model;
 
 class Form extends AbstractController
 {
-    protected {$this->entityName}Model \${$this->entityName}Model;
-    protected {$this->entityName}Form \${$this->entityName}Form;
-
-    public function __construct(View \$view, array \$options,
-                                {$this->entityName}Model \${$this->entityName}Model, {$this->entityName}Form \${$this->entityName}Form)
-    {
+    public function __construct(
+    View \$view,
+    array \$options,
+    protected {$this->entityName}Model \${$this->entityName}Model,
+    protected {$this->entityName}Form \${$this->entityName}Form
+    ) {
         parent::__construct(\$view, \$options);
-
-        \$this->{$this->entityName}Model = \${$this->entityName}Model;
-        \$this->{$this->entityName}Form = \${$this->entityName}Form;
     }
 
     public function add()
@@ -467,7 +472,7 @@ EOT);
 namespace {$this->targetPackNamespace}\Controller;
 
 use Prim\{View, AbstractController};
-use Jarzon\Pagination;
+use PaginationPack\Service\Pagination;
 
 use {$this->options['project_name']}\TablePack\Service\Table as TableService;
 use {$this->targetPackNamespace}\Entity\\{$this->entityName}Entity;
@@ -475,19 +480,17 @@ use {$this->targetPackNamespace}\Model\\{$this->entityName}Model;
 
 class Table extends AbstractController
 {
-    public {$this->entityName}Model \${$this->entityName}Model;
-
-    public function __construct(View \$view, array \$options,
-                                {$this->entityName}Model \${$this->entityName}Model)
-    {
+    public function __construct(
+        View \$view,
+        array \$options,
+        public {$this->entityName}Model \${$this->entityName}Model
+    ) {
         parent::__construct(\$view, \$options);
-
-        \$this->{$this->entityName}Model = \${$this->entityName}Model;
     }
 
     public function index(int \$page = 1)
     {
-        \$paginator = new Pagination((int)\$page, \$this->{$this->entityName}Model->getNumberOf{$this->entityName}s(), 13, 3);
+        \$paginator = new Pagination(\$page, \$this->{$this->entityName}Model->getNumberOf{$this->entityName}s(), 13, 3);
 
         \$t = new {$this->entityName}Entity();
 
@@ -500,7 +503,7 @@ EOT;
         foreach ($this->data as $row) {
             if(!$row['public']) continue;
 
-            $file .= "->th('{$row['name']}')->order(\$t->{$row['name']})->escape()";
+            $file .= "->th('{$row['name']}')->order(\$t->{$row['name']})->escape()\n";
         }
 
         $file .= <<<EOT
@@ -541,19 +544,20 @@ namespace {$this->targetPackNamespace}\Model;
 
 use Jarzon\QueryBuilder\Builder as QB;
 use {$this->targetPackNamespace}\Entity\\{$this->entityName}Entity;
-use PDO;
+use \PrimPack\Service\PDO;
 use Prim\Model;
 use {$this->options['project_name']}\UserPack\Service\User;
 
 class {$this->entityName}Model extends Model
 {
-    public \$user;
+     \$user;
 
-    public function __construct(PDO \$db, array \$options, User \$user)
-    {
+    public function __construct(
+        PDO \$db,
+        array \$options,
+        public User \$user
+    ) {
         parent::__construct(\$db, \$options);
-
-        \$this->user = \$user;
     }
 
     public function add{$this->entityName}(array \$data)
@@ -690,11 +694,12 @@ EOT);
         $file = <<<EOT
 <?php declare(strict_types=1);
 /**
- * @var \$this \Prim\View
- * @var \$new bool
- * @var \$form \Jarzon\Form
- * @var \${$this->entityNameLC} {$this->targetPackNamespace}\Entity\\{$this->entityName}Entity
- * @var \$_ string
+ * @var \Prim\View \$this
+ * @var callable \$_
+ * @var callable \$e
+ * @var \Libellum\BasePack\Service\ActionsMenu $_actionMenu
+ * @var \Libellum\UserPack\Service\User $user
+ * @var {$this->targetPackNamespace}\Entity\\{$this->entityName}Entity \${$this->entityNameLC}
  */
 
     if(!\$new && \${$this->entityNameLC}->status === 0) {
@@ -716,7 +721,7 @@ EOT;
             ";
         }
 
-$file .= <<<EOT
+        $file .= <<<EOT
 
             <?=\$form('submit')->value(\$_('save {$this->entityNameLC}'))->row?>
             <a class="cancel_button" href="<?=cancel('/{$this->entityNameLC}s/')?>"><?=\$_("cancel")?></a>
