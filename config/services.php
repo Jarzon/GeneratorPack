@@ -6,7 +6,7 @@ use Prim\Container;
 
 return [
     Generator::class => function(Container $dic) {
-        $user = $dic->get('userService');
+        $user = $dic->service('UserPack\User');
         $user->verification();
         if(!$user->isAdmin()) {
             header('location: /dashboard');
@@ -15,7 +15,7 @@ return [
         return [
             $dic->form('GeneratorPack\PackForm'),
             $dic->form('GeneratorPack\DataForm'),
-            $dic->get('fileService'),
+            $dic->service('GeneratorPack\File'),
         ];
     },
     File::class => function(Container $dic) {
