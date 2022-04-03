@@ -431,9 +431,10 @@ class Form extends AbstractController
             }
         }
 
-        \$this->render('add', '{$this->entityName}Pack', [
+        \$this->render('form', '{$this->entityName}Pack', [
             'form' => \$this->{$this->entityName}Form->getForm(),
-            '{$this->entityNameLC}' => new class{}
+            '{$this->entityNameLC}' => new class{},
+            'new' => true
         ]);
     }
 
@@ -458,9 +459,10 @@ class Form extends AbstractController
             }
         }
 
-        \$this->render('edit', '{$this->entityName}Pack', [
+        \$this->render('form', '{$this->entityName}Pack', [
             'form' => \$this->{$this->entityName}Form->getForm(),
-            '{$this->entityNameLC}' => \$infos
+            '{$this->entityNameLC}' => \$infos,
+            'new' => false
         ]);
     }
 }
@@ -661,33 +663,12 @@ EOT;
         $modeDir = $this->packDir . '/view';
         $this->createDir($modeDir);
 
-        $viewFile = "$modeDir/add.php";
+        $viewFile = "$modeDir/form.php";
 
-        if(file_exists($viewFile) || file_exists("{$modeDir}/edit.php") || file_exists("{$modeDir}/form.php") || file_exists("{$modeDir}/index.php")) {
+        if(file_exists($viewFile) || file_exists("{$modeDir}/index.php")) {
             $modeDir = "{$this->packDir}/view/{$this->entityNameLC}";
             $this->createDir($modeDir);
-            $viewFile = "$modeDir/add.php";
         }
-
-        $this->createFile($viewFile, <<<EOT
-<?php declare(strict_types=1);
-\$title = \$_('add new {$this->entityNameLC}');
-
-\$this->insert('form', '', [
-    'new' => true
-]);
-
-EOT);
-
-        $this->createFile("{$modeDir}/edit.php", <<<EOT
-<?php declare(strict_types=1);
-\$title = \$_('edit {$this->entityNameLC}');
-
-\$this->insert('form', '', [
-    'new' => false
-]);
-
-EOT);
 
         // TODO: based $this->data generate the columns
         $file = <<<EOT
@@ -738,7 +719,7 @@ EOT;
 
 EOT;
 
-        $this->createFile("{$modeDir}/form.php", $file);
+        $this->createFile($viewFile, $file);
 
         $this->createFile("{$modeDir}/index.php", <<<EOT
 <?php declare(strict_types=1);
