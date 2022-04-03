@@ -697,8 +697,8 @@ EOT);
  * @var \Prim\View \$this
  * @var callable \$_
  * @var callable \$e
- * @var \Libellum\BasePack\Service\ActionsMenu $_actionMenu
- * @var \Libellum\UserPack\Service\User $user
+ * @var \Libellum\BasePack\Service\ActionsMenu \$_actionMenu
+ * @var \Libellum\UserPack\Service\User \$user
  * @var {$this->targetPackNamespace}\Entity\\{$this->entityName}Entity \${$this->entityNameLC}
  */
 
