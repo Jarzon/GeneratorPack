@@ -64,10 +64,10 @@ class File
 
     private function getColumnType(string $type, bool $isType = false): string
     {
-        if (in_array($type, ['string', 'text', 'email', 'url', 'file', 'tel', 'hidden', 'color', 'password'])) {
+        if (in_array($type, ['string', 'text', 'textarea', 'email', 'url', 'file', 'tel', 'hidden', 'color', 'password'])) {
             $type = 'text';
         } else if (in_array($type, ['number', 'float', 'range', 'currency'])) {
-            $type = $isType? 'Numerice' : 'number';
+            $type = $isType? 'Numeric' : 'number';
         } else if (in_array($type, ['datetime', 'date', 'time'])) {
             $type = 'date';
         }
@@ -91,6 +91,7 @@ class File
 namespace {$this->targetPackNamespace}\Entity;
 
 use Jarzon\QueryBuilder\Entity\EntityBase;
+use Jarzon\QueryBuilder\Columns\{Numeric, Text, Date};
 
 class {$this->entityName}Entity extends EntityBase
 {
@@ -103,7 +104,7 @@ EOT;
         }
 
         $file .= "
-    public function __construct(\$alias = '')
+    public function __construct(string \$alias = '')
     {
         parent::__construct(\$alias);
 
@@ -216,14 +217,14 @@ class {$this->entityName}Form extends FormAbstract
         \$this->build();
     }
     
-    public function build()
+    public function build(): void
     {
         \$this->form
 
 EOT;
 
         foreach ($this->data as $row) {
-            if(!$row['public']) continue;
+            if($row['public'] === 'private') continue;
 
             $file .= $this->generateFormLine($row);
         }
@@ -231,13 +232,13 @@ EOT;
         $file .= '        ->submit();
     }
      
-    public function buildAdmin()
+    public function buildAdmin(): void
     {
         $this->form
         ';
 
         foreach ($this->data as $row) {
-            if($row['public']) continue;
+            if($row['public'] === 'public') continue;
 
             $file .= $this->generateFormLine($row);
         }
@@ -309,21 +310,21 @@ EOT);
 use Prim\Container;
 
 use {$this->targetPackNamespace}\Form\\{$this->entityName}Form;
-use {$this->targetPackNamespace}\Controller\\{{$this->entityName}Table, Form, {$this->entityName}Actions};
+use {$this->targetPackNamespace}\Controller\\{Table, Form, Actions};
 
 return [
     {$this->entityName}Form::class => function(Container \$dic) {
         return [];
     },
 
-    {$this->entityName}Table::class => function(Container \$dic) {
+    Table::class => function(Container \$dic) {
         \$dic->service('UserPack\User')->verification();
 
         return [
             \$dic->model('{$this->pack['pack_name']}\\{$this->entityName}Model'),
         ];
     },
-    {$this->entityName}Form::class => function(Container \$dic) {
+    Form::class => function(Container \$dic) {
         \$dic->service('UserPack\User')->verification();
 
         return [
@@ -331,7 +332,7 @@ return [
             \$dic->form('{$this->pack['pack_name']}\\{$this->entityName}Form')
         ];
     },
-    {$this->entityName}Actions::class => function(Container \$dic) {
+    Actions::class => function(Container \$dic) {
         \$dic->service('UserPack\User')->verification();
 
         return [
@@ -372,7 +373,7 @@ class Actions extends AbstractController
         parent::__construct(\$view, \$options);
     }
 
-    public function delete(int \${$this->entityNameLC}Id)
+    public function delete(int \${$this->entityNameLC}Id): void
     {
         \$this->{$this->entityName}Model->delete{$this->entityName}(\${$this->entityNameLC}Id);
 
@@ -411,7 +412,7 @@ class Form extends AbstractController
         parent::__construct(\$view, \$options);
     }
 
-    public function add()
+    public function add(): void
     {
         if (\$this->{$this->entityName}Form->submitted()) {
             try {
@@ -436,7 +437,7 @@ class Form extends AbstractController
         ]);
     }
 
-    public function edit(int \${$this->entityNameLC}_id)
+    public function edit(int \${$this->entityNameLC}_id): void
     {
         \$infos = \$this->{$this->entityName}Model->get{$this->entityName}(\${$this->entityNameLC}_id);
 
@@ -488,7 +489,7 @@ class Table extends AbstractController
         parent::__construct(\$view, \$options);
     }
 
-    public function index(int \$page = 1)
+    public function index(int \$page = 1): void
     {
         \$paginator = new Pagination(\$page, \$this->{$this->entityName}Model->getNumberOf{$this->entityName}s(), 13, 3);
 
@@ -503,7 +504,7 @@ EOT;
         foreach ($this->data as $row) {
             if(!$row['public']) continue;
 
-            $file .= "->th('{$row['name']}')->order(\$t->{$row['name']})->escape()\n";
+            $file .= "            ->th('{$row['name']}')->order(\$t->{$row['name']})->escape()\n";
         }
 
         $file .= <<<EOT
@@ -550,8 +551,6 @@ use {$this->options['project_name']}\UserPack\Service\User;
 
 class {$this->entityName}Model extends Model
 {
-     \$user;
-
     public function __construct(
         PDO \$db,
         array \$options,
@@ -560,7 +559,7 @@ class {$this->entityName}Model extends Model
         parent::__construct(\$db, \$options);
     }
 
-    public function add{$this->entityName}(array \$data)
+    public function add{$this->entityName}(array \$data): int
     {
         \$m = new {$this->entityName}Entity();
 
@@ -571,7 +570,7 @@ class {$this->entityName}Model extends Model
         return \$query->exec();
     }
 
-    public function update{$this->entityName}(array \$data, int \${$this->entityNameLC}_id)
+    public function update{$this->entityName}(array \$data, int \${$this->entityNameLC}_id): int
     {
         \$m = new {$this->entityName}Entity();
 
@@ -583,12 +582,12 @@ class {$this->entityName}Model extends Model
         return \$query->exec();
     }
 
-    public function delete{$this->entityName}(int \$id)
+    public function delete{$this->entityName}(int \$id): int
     {
         \$this->update{$this->entityName}(['status' => -1], \$id);
     }
 
-    public function get{$this->entityName}(int \${$this->entityNameLC}_id)
+    public function get{$this->entityName}(int \${$this->entityNameLC}_id): object|false
     {
         \$m = new {$this->entityName}Entity();
 
@@ -626,7 +625,7 @@ EOT;
         return (int)\$query->fetchColumn();
     }
 
-    public function get{$this->entityName}s(int \$mtart, int \$numberOfElements, string \$orderField, string \$order, array \$columns)
+    public function get{$this->entityName}s(int \$mtart, int \$numberOfElements, string \$orderField, string \$order, array \$columns): array|false
     {
         \$m = new {$this->entityName}Entity();
 
