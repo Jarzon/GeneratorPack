@@ -10,10 +10,10 @@ function addLine(name = null, type = null, defaultValue = null, isPublic = null)
 
         if (type === 'number') {
             value.setAttribute('type', 'number');
-            value.value = 0;
+            value.value = '0';
         }
         else if (type === 'datetime' || type === 'date') {
-            value.setAttribute('type', 'number');
+            value.setAttribute('type', 'text');
             value.value = 'CURRENT_TIMESTAMP';
         } else {
             value.setAttribute('type', 'text');

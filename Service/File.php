@@ -52,11 +52,11 @@ class File
         $this->generateEntity();
         $this->generatePhinx();
         $this->generateForm();
+        $this->generateModel();
 
         if($this->pack['crud'] === true) {
             $this->generateRouting();
             $this->generateServices();
-            $this->generateModel();
             $this->generateControllers();
             $this->generateViews();
         }
