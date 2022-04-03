@@ -2,6 +2,24 @@ let lines = document.querySelector('#lines');
 
 function addLine(name = null, type = null, defaultValue = null, isPublic = null) {
     let baseForm = document.querySelector('#baseForm').cloneNode(true);
+    let typeSelect = baseForm.querySelector('#type');
+    let value = baseForm.querySelector('#default');
+
+    typeSelect.addEventListener('change', function () {
+        let type = this.value;
+
+        if (type === 'number') {
+            value.setAttribute('type', 'number');
+            value.value = 0;
+        }
+        else if (type === 'datetime' || type === 'date') {
+            value.setAttribute('type', 'number');
+            value.value = 'CURRENT_TIMESTAMP';
+        } else {
+            value.setAttribute('type', 'text');
+            value.value = '';
+        }
+    });
 
     baseForm.id = '';
 
