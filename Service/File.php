@@ -49,6 +49,7 @@ class File
     {
         $this->createDir($this->packDir);
 
+        $this->generateTableEntity();
         $this->generateEntity();
         $this->generatePhinx();
         $this->generateForm();
@@ -62,7 +63,7 @@ class File
         }
     }
 
-    private function getColumnType(string $type, bool $isType = false): string
+    private function getTableColumnType(string $type, bool $isType = false): string
     {
         if (in_array($type, ['string', 'text', 'textarea', 'email', 'url', 'file', 'tel', 'hidden', 'color', 'password'])) {
             $type = 'text';
@@ -79,6 +80,66 @@ class File
         return $type;
     }
 
+    private function getColumnType(string $type): string
+    {
+        if (in_array($type, ['string', 'text', 'textarea', 'email', 'url', 'file', 'tel', 'hidden', 'color', 'password', 'datetime', 'date', 'time', 'currency'])) {
+            $type = 'string';
+        }
+        else if (in_array($type, ['number', 'range'])) {
+            $type = 'int';
+        }
+        else if (in_array($type, ['float'])) {
+            $type = 'float';
+        }
+
+        return $type;
+    }
+
+    public function generateTableEntity(): void
+    {
+        $entityDir = $this->packDir . '/Entity';
+
+        $this->createDir($entityDir);
+
+        $file = <<<EOT
+<?php declare(strict_types=1);
+
+namespace {$this->targetPackNamespace}\Entity;
+
+use Jarzon\QueryBuilder\Entity\EntityBase;
+use Jarzon\QueryBuilder\Columns\{Numeric, Text, Date};
+
+class {$this->entityName}Table extends EntityBase
+{
+
+EOT;
+        // Proprieties
+        foreach ($this->data as $row) {
+            $type = $this->getTableColumnType($row['type'], true);
+            $file .= "    public {$type} \${$row['name']};\n";
+        }
+
+        $file .= "
+    public function __construct(string \$alias = '')
+    {
+        parent::__construct(\$alias);
+
+        \$this->table('{$this->entityNameLC}');
+
+";
+
+        foreach ($this->data as $row) {
+            $type = $this->getTableColumnType($row['type']);
+
+            $file .= "        \$this->{$row['name']} = \$this->{$type}('{$row['name']}');\n";
+        }
+
+        $file .= '    }
+}
+';
+        $this->createFile("$entityDir/{$this->entityName}Table.php", $file);
+    }
+
     public function generateEntity(): void
     {
         $entityDir = $this->packDir . '/Entity';
@@ -93,35 +154,20 @@ namespace {$this->targetPackNamespace}\Entity;
 use Jarzon\QueryBuilder\Entity\EntityBase;
 use Jarzon\QueryBuilder\Columns\{Numeric, Text, Date};
 
-class {$this->entityName}Entity extends EntityBase
+class {$this->entityName} extends EntityBase
 {
 
 EOT;
         // Proprieties
         foreach ($this->data as $row) {
-            $type = $this->getColumnType($row['type'], true);
+            $type = $this->getColumnType($row['type']);
             $file .= "    public {$type} \${$row['name']};\n";
         }
 
-        $file .= "
-    public function __construct(string \$alias = '')
-    {
-        parent::__construct(\$alias);
-
-        \$this->table('{$this->entityNameLC}');
-
-";
-
-        foreach ($this->data as $row) {
-            $type = $this->getColumnType($row['type']);
-
-            $file .= "        \$this->{$row['name']} = \$this->{$type}('{$row['name']}');\n";
-        }
-
-        $file .= '    }
+        $file .= '
 }
 ';
-        $this->createFile("$entityDir/{$this->entityName}Entity.php", $file);
+        $this->createFile("$entityDir/{$this->entityName}.php", $file);
     }
 
     public function generatePhinx(): void
