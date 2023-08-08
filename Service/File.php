@@ -252,7 +252,13 @@ EOT;
 
     protected function generateFormLine(array $row): string
     {
-        $file = "            ->{$row['type']}('{$row['name']}')\n";
+        $type = $row['type'];
+
+        if($type === 'datetime') {
+            $type = 'text';
+        }
+
+        $file = "            ->{$type}('{$row['name']}')\n";
 
         if(!empty($row['max']) || $row['type'] === 'string'  || $row['type'] === 'text' || isset($row['default'])) {
             if(!empty($row['min'])) {
@@ -586,7 +592,7 @@ class {$this->entityName}Model extends Model
 
     public function delete{$this->entityName}(int \$id): int
     {
-        \$this->update{$this->entityName}(['status' => -1], \$id);
+        return \$this->update{$this->entityName}(['status' => -1], \$id);
     }
 
     public function get{$this->entityName}(int \${$this->entityNameLC}_id): object|false
