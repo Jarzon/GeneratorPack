@@ -44,7 +44,7 @@ $this->start('default'); ?>
 
             <hr class="separator">
 
-            <?=$packForm('submit')->value('Save')->row?>
+            <?=$packForm('save')->value('Save')->row?>
 
         <?=$packForm('/form')->row?>
     </div>
