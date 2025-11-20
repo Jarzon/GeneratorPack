@@ -23,11 +23,28 @@ function addLine(name = null, type = null, defaultValue = null, isPublic = null)
 
     baseForm.id = '';
 
-    let remove = document.createElement('td');
+    let actions = document.createElement('td');
+    let moveup = document.createElement('div');
+    moveup.innerHTML = '<img alt="MoveUp" src="/img/arrow_up.svg">';
+    moveup.onclick = function() {
+        baseForm.parentElement.insertBefore(baseForm, baseForm.previousSibling);
+    };
+
+    let movedown = document.createElement('div');
+    movedown.innerHTML = '<img alt="MoveDown" src="/img/arrow_down.svg">';
+    movedown.onclick = function() {
+        baseForm.parentElement.insertBefore(baseForm.nextSibling, baseForm);
+    };
+
+    let remove = document.createElement('div');
     remove.innerHTML = '<img alt="Remove" src="/img/delete.svg">';
     remove.onclick = function() {
         lines.removeChild(baseForm);
     };
+
+    actions.append(moveup);
+    actions.append(movedown);
+    actions.append(remove);
 
     if(name !== null) {
         baseForm.querySelector('#name').value = name;
@@ -45,7 +62,7 @@ function addLine(name = null, type = null, defaultValue = null, isPublic = null)
         baseForm.querySelector('#public').value = isPublic;
     }
 
-    baseForm.appendChild(remove);
+    baseForm.appendChild(actions);
 
     lines.appendChild(baseForm);
 }
