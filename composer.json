@@ -16,6 +16,11 @@
     "psr-4": { "GeneratorPack\\": "./" }
   },
   "require": {
-    "php": ">=8.1.0"
+    "php": ">=8.4.0",
+    "jarzon/prim": "~1.0.0",
+    "jarzon/form": ">=1.14.0"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1.0"
   }
 }
