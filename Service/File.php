@@ -2,9 +2,10 @@
 
 namespace GeneratorPack\Service;
 
+use Prim\View;
+
 class File
 {
-    public array $options;
     public array $pack;
     public array $data;
 
@@ -13,8 +14,10 @@ class File
     public string $entityNameLC;
     public string $targetPackNamespace;
 
-    public function __construct(array $options = [])
-    {
+    public function __construct(
+        public array $options,
+        public View $view
+    ) {
         $this->options = $options += [
             'project_name' => ''
         ];

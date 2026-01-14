@@ -20,7 +20,8 @@ return [
     },
     File::class => function(Container $dic) {
         return [
-            $dic->options
+            $dic->options,
+            $dic->get('view')
         ];
     }
 ];
