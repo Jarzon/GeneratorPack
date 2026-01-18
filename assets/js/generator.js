@@ -79,8 +79,4 @@ window.addEventListener('load', function () {
     document.querySelector('#entity_name').addEventListener('click', function (e) {
         document.querySelector('#entity_name').setAttribute('value', '');
     });
-
-    addLine('id', 'number', '', 'private');
-    addLine('user_id', 'number', '', 'private');
-    addLine('status', 'number', '0', 'private');
 });

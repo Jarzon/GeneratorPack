@@ -2,7 +2,8 @@
   "js": {
     "files": {
       "generator.js": [
-        "vendor/jarzon/generatorpack/assets/js/generator.js"
+        "vendor/jarzon/generatorpack/assets/js/generator.js",
+        "vendor/jarzon/generatorpack/assets/js/defaultLines.js"
       ]
     }
   }

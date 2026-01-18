@@ -59,5 +59,5 @@ $this->start('default'); ?>
 <?php $this->end() ?>
 
 <?php $this->start('js') ?>
-    <script src="/js/generator.js" defer></script>
+    <script src="<?=$this->fileCache("/js/generator.js") ?>" defer></script>
 <?php $this->end() ?>
