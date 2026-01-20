@@ -1,6 +1,6 @@
 let lines = document.querySelector('#lines');
 
-function addLine(name = null, type = null, defaultValue = null, isPublic = null) {
+function generateRow(name = null, type = null, defaultValue = null, isPublic = null) {
     let baseForm = document.querySelector('#baseForm').cloneNode(true);
     let typeSelect = baseForm.querySelector('#type');
     let value = baseForm.querySelector('#default');
@@ -62,14 +62,28 @@ function addLine(name = null, type = null, defaultValue = null, isPublic = null)
         baseForm.querySelector('#public').value = isPublic;
     }
 
-    baseForm.appendChild(actions);
+    return baseForm;
+}
 
-    lines.appendChild(baseForm);
+function addLine(name = null, type = null, defaultValue = null, isPublic = null) {
+    let row = generateRow(name, type, defaultValue, isPublic);
+
+    lines.appendChild(row);
+}
+
+function addNewLine() {
+    let row = generateRow();
+
+    if(lines.children.length >= 1) {
+        lines.children[1].after(row);
+    } else {
+        lines.appendChild(row);
+    }
 }
 
 window.addEventListener('load', function () {
     document.querySelector('#add').addEventListener('click', function (e) {
-        addLine();
+        addNewLine();
     });
 
     document.querySelector('#pack_name').addEventListener('change', function (e) {
