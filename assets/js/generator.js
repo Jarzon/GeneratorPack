@@ -46,6 +46,8 @@ function generateRow(name = null, type = null, defaultValue = null, isPublic = n
     actions.append(movedown);
     actions.append(remove);
 
+    baseForm.appendChild(actions);
+
     if(name !== null) {
         baseForm.querySelector('#name').value = name;
     }
