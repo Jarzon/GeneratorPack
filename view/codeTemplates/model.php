@@ -11,7 +11,7 @@ echo <<<EOT
 namespace {$file->targetPackNamespace}\Model;
 
 use Jarzon\QueryBuilder\Builder as QB;
-use {$file->targetPackNamespace}\Entity\\{$file->entityName}Entity;
+use {$file->targetPackNamespace}\Entity\\{$file->entityName};
 use \PrimPack\Service\PDO;
 use Prim\Model;
 use {$file->options['project_name']}\UserPack\Service\User;

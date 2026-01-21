@@ -14,7 +14,7 @@ use Prim\{View, AbstractController};
 use PaginationPack\Service\Pagination;
 
 use {$file->options['project_name']}\TablePack\Service\Table as TableService;
-use {$file->targetPackNamespace}\Entity\\{$file->entityName}Entity;
+use {$file->targetPackNamespace}\Entity\\{$file->entityName};
 use {$file->targetPackNamespace}\Model\\{$file->entityName}Model;
 
 class Table extends AbstractController
@@ -31,7 +31,7 @@ class Table extends AbstractController
     {
         \$paginator = new Pagination(\$page, \$this->{$file->entityName}Model->getNumberOf{$file->entityName}s(), 13, 3);
 
-        \$t = new {$file->entityName}Entity();
+        \$t = new {$file->entityName}();
 
         \$table = new TableService('table');
 
