@@ -60,4 +60,13 @@ $this->start('default'); ?>
 
 <?php $this->start('js') ?>
     <script src="<?=$this->fileCache("/js/generator.js") ?>" defer></script>
+    <?php if(isset($lines)): ?>
+        <script>
+            window.addEventListener('load', function () {
+                <?php foreach($lines as $line): ?>
+                addLine("<?= $line['name']?>", "<?= $line['type']?>","<?= $line['default']?>","<?= $line['public']?>");
+                <?php endforeach; ?>
+            });
+        </script>
+    <?php endif; ?>
 <?php $this->end() ?>

@@ -14,12 +14,14 @@ $this->start('default');
 <table class="table">
     <tr>
         <th>Pack</th>
+        <th>Actions</th>
     </tr>
     <?php foreach ($packs as $pack):
         if($pack === 'GeneratorPack') continue;
         ?>
         <tr>
             <td><?=$pack?></td>
+            <td><a href="/admin/generator/modify/<?=$pack?>">Modify</a></td>
         </tr>
     <?php endforeach; ?>
 </table>

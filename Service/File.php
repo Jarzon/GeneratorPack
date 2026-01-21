@@ -19,7 +19,7 @@ class File
         public View $view
     ) {
         $this->options = $options += [
-            'project_name' => ''
+            'project_name' => '',
         ];
     }
 
@@ -43,6 +43,11 @@ class File
         $this->packDir = $this->options['root'] . 'src/' . $packValues['pack_name'];
     }
 
+    public function savePackStruct(): void
+    {
+        file_put_contents("{$this->packDir}/config/packStruct.php", serialize($this->data));
+    }
+
     public function setData(array $dataValues): void
     {
         $this->data = $dataValues;
@@ -64,6 +69,8 @@ class File
             $this->generateControllers();
             $this->generateViews();
         }
+
+        $this->savePackStruct();
     }
 
     public function getTableColumnType(string $type, bool $isType = false): string
@@ -102,7 +109,7 @@ class File
         $this->createDir($entityDir);
 
         $file = $this->view->fetch('codeTemplates/entityTable', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $this->createFile("$entityDir/{$this->entityName}Table.php", $file);
@@ -115,7 +122,7 @@ class File
         $this->createDir($entityDir);
 
         $file = $this->view->fetch('codeTemplates/entity', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $this->createFile("$entityDir/{$this->entityName}.php", $file);
@@ -127,7 +134,7 @@ class File
         $this->createDir($phinxDir);
 
         $file = $this->view->fetch('codeTemplates/phinxMigration', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $this->createFile($phinxDir . date('YmdHis') . "_{$this->entityNameLC}_init.php", $file);
@@ -138,7 +145,7 @@ class File
         $formDir = $this->packDir . '/Form';
 
         $file = $this->view->fetch('codeTemplates/formClass', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $this->createDir($formDir);
@@ -179,7 +186,7 @@ class File
         }
 
         $file = $this->view->fetch('codeTemplates/config/routing', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $this->createFile("$routingFile", $file);
@@ -194,7 +201,7 @@ class File
         }
 
         $file = $this->view->fetch('codeTemplates/config/services', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $this->createFile($servicesFile, $file);
@@ -212,7 +219,7 @@ class File
         }
 
         $file = $this->view->fetch('codeTemplates/controller/actions', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $this->createFile($controllerFile, $file);
@@ -224,13 +231,13 @@ class File
         }
 
         $file = $this->view->fetch('codeTemplates/controller/form', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $this->createFile($controllerFile, $file);
 
         $file = $this->view->fetch('codeTemplates/controller/table', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $controllerFile = "$controllerDir/Table.php";
@@ -248,7 +255,7 @@ class File
         $this->createDir($modeDir);
 
         $file = $this->view->fetch('codeTemplates/model', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $this->createFile("{$modeDir}/{$this->entityName}Model.php", $file);
@@ -267,13 +274,13 @@ class File
         }
 
         $file = $this->view->fetch('codeTemplates/view/form', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $this->createFile($viewFile, $file);
 
         $file = $this->view->fetch('codeTemplates/view/index', 'GeneratorPack', [
-            'file' => $this
+            'file' => $this,
         ]);
 
         $this->createFile("{$modeDir}/index.php", $file);
