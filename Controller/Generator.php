@@ -51,11 +51,12 @@ class Generator extends AbstractController
                 $this->message('alert', $e->getMessage());
             }
 
-            if(!empty($packValues) && !empty($dataValues)) {
+            if(!empty($packValues)) {
                 $this->file->setPack($packValues['pack_name']);
-                $this->file->setData($dataValues);
 
                 $this->file->createPack();
+                $this->message('ok', 'The pack was successfully created');
+                $this->redirect("/admin/generator/modify/{$this->file->packName}");
             }
         }
 
@@ -64,38 +65,9 @@ class Generator extends AbstractController
         ]);
     }
 
-    public function create(): void
+    public function modify(string $packName, string $entityName = ''): void
     {
-        if($this->packForm->submitted()) {
-            try {
-                $packValues = $this->packForm->validation();
-                $dataValues = $this->dataForm->validation();
-            }
-            catch(ValidationException $e) {
-                $this->message('alert', $e->getMessage());
-            }
-
-            if(!empty($packValues) && !empty($dataValues)) {
-                $this->file->setPack($packValues['pack_name']);
-                $this->file->setData($dataValues);
-
-                $this->file->createPack();
-            }
-        }
-
-        $this->render('form', 'GeneratorPack', [
-            'packForm' => $this->packForm->getForm(),
-            'dataForm' => $this->dataForm->getForm(),
-        ]);
-    }
-
-    public function modify(string $packName): void
-    {
-        try {
-            $data = file_get_contents("{$this->options['root']}src/{$packName}/config/packStruct.php");
-            $data = unserialize($data);
-        } catch (\Exception $e) {}
-
+        $data = $this->file->getEntityStruct($packName, $entityName);
 
         $this->file->setPack($packName);
 
@@ -112,7 +84,7 @@ class Generator extends AbstractController
                 $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
                 $this->file->setData($dataValues);
 
-                $this->file->createPack();
+                $this->file->createEntity();
             }
         }
 

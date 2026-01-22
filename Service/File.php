@@ -33,6 +33,7 @@ class File
 
         $this->packDir = $this->options['root'] . 'src/' . $packName;
         $this->packName = $packName;
+        $this->targetPackNamespace = "{$this->options['project_name']}\\{$packName}";
     }
 
     public function setEntity(string $entityName, bool $crud): void
@@ -44,14 +45,39 @@ class File
         $this->entityName = ucfirst($entityName);
         $this->entityNameLC = lcfirst($entityName);
 
-        $this->targetPackNamespace = "{$this->options['project_name']}\\{$this->packName}";
         $this->packDir = $this->options['root'] . 'src/' . $this->packName;
         $this->createCRUD = $crud;
     }
 
+    public function getEntityStruct(string $packName, string $entityName): array|false
+    {
+        if($data = $this->getPackStruct($packName)) {
+            if(isset($data[$entityName])) {
+                return $data[$entityName];
+            }
+        }
+
+        return false;
+    }
+
+    public function getPackStruct(string $packName): array|false
+    {
+        try {
+            $data = file_get_contents("{$this->options['root']}src/{$packName}/config/packStruct.php");
+            return unserialize($data);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
     public function savePackStruct(): void
     {
-        file_put_contents("{$this->packDir}/config/packStruct.php", serialize(['entity' => $this->entityName, 'lines' => $this->data]));
+        $data = $this->getPackStruct($this->packName);
+        if($data === false) {
+            return;
+        }
+        $data[$this->entityName] = $this->data;
+        file_put_contents("{$this->packDir}/config/packStruct.php", serialize($data));
     }
 
     public function setData(array $dataValues): void
@@ -60,6 +86,11 @@ class File
     }
 
     public function createPack(): void
+    {
+        $this->createDir($this->packDir);
+    }
+
+    public function createEntity(): void
     {
         $this->createDir($this->packDir);
 
