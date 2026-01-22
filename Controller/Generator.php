@@ -65,11 +65,11 @@ class Generator extends AbstractController
         ]);
     }
 
-    public function modify(string $packName, string $entityName = ''): void
+    public function modify(string $packName, string|null $entityName = null): void
     {
         $this->file->setPack($packName);
 
-        $data = $this->file->getEntityStruct($packName, $entityName);
+        $data = $entityName !== null? $this->file->getEntityStruct($packName, $entityName) : [];
 
         if($entityName !== null) $this->file->setEntity($entityName, $data['crud'] ?? true);
 
@@ -99,7 +99,7 @@ class Generator extends AbstractController
         $this->render('form', 'GeneratorPack', [
             'entityForm' => $this->entityForm->getForm(),
             'dataForm' => $this->dataForm->getForm(),
-            'packName' => $data['entity'] ?? null,
+            'packName' => $packName,
             'entityName' => $entityName ?: null,
             'entities' => $entities,
             'lines' => $data['lines'] ?? [],
