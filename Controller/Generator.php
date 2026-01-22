@@ -69,6 +69,10 @@ class Generator extends AbstractController
     {
         $this->file->setPack($packName);
 
+        $data = $this->file->getEntityStruct($packName, $entityName);
+
+        if($entityName !== null) $this->file->setEntity($entityName, $data['crud'] ?? true);
+
         if($this->entityForm->submitted()) {
             try {
                 $entityValues = $this->entityForm->validation();
@@ -79,15 +83,18 @@ class Generator extends AbstractController
             }
 
             if(!empty($dataValues)) {
-                $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
+                if($entityName === null) $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
                 $this->file->setData($dataValues);
 
-                $this->file->createEntity();
+                if($entityName === null) {
+                    $this->file->createEntity();
+                } else {
+                    $this->file->createEntity();
+                }
             }
         }
 
         $entities = array_keys($this->file->getPackStruct($packName) ?: []);
-        $data = $this->file->getEntityStruct($packName, $entityName);
 
         $this->render('form', 'GeneratorPack', [
             'entityForm' => $this->entityForm->getForm(),

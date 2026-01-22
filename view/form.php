@@ -19,18 +19,20 @@ $this->start('default'); ?>
             </tr>
         </table>
 
-        <table class="table responsiveTable">
-            <tr>
-                <th>Entity</th>
-                <th>Actions</th>
-            </tr>
-            <?php foreach($entities as $entity): ?>
+        <?php if(!empty($entities)): ?>
+            <table class="table responsiveTable">
                 <tr>
-                    <td><?=$entity ?></td>
-                    <td><a href="/admin/generator/modify/TestPack/<?=$entity ?>">Modify</a></td>
+                    <th>Entity</th>
+                    <th>Actions</th>
                 </tr>
-            <?php endforeach; ?>
-        </table>
+                <?php foreach($entities as $entity): ?>
+                    <tr>
+                        <td><?=$entity ?></td>
+                        <td><a href="/admin/generator/modify/TestPack/<?=$entity ?>">Modify</a></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php endif; ?>
 
         <?=$entityForm('form')->row?>
             <?php if($entityName === null): ?>

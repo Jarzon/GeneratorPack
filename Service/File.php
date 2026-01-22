@@ -73,7 +73,7 @@ class File
     public function savePackStruct(): void
     {
         $data = $this->getPackStruct($this->packName) ?: [];
-        $data[$this->entityName] = $this->data;
+        $data[$this->entityName] = ['crud' => $this->createCRUD, 'lines' => $this->data];
         file_put_contents("{$this->packDir}/config/packStruct.php", serialize($data));
     }
 
@@ -90,6 +90,8 @@ class File
     public function createEntity(): void
     {
         $this->createDir($this->packDir);
+
+        $this->createConfigDir();
 
         $this->generateTableEntity();
         $this->generateEntity();
@@ -211,7 +213,6 @@ class File
     public function generateRouting(): void
     {
         $configDir = $this->packDir . '/config';
-        $this->createDir($configDir);
 
         $routingFile = "$configDir/routing.php";
 
@@ -336,5 +337,11 @@ class File
         }
 
         file_put_contents($location, $content);
+    }
+
+    public function createConfigDir(): void
+    {
+        $configDir = $this->packDir . '/config';
+        $this->createDir($configDir);
     }
 }
