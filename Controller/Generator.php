@@ -67,8 +67,6 @@ class Generator extends AbstractController
 
     public function modify(string $packName, string $entityName = ''): void
     {
-        $data = $this->file->getEntityStruct($packName, $entityName);
-
         $this->file->setPack($packName);
 
         if($this->entityForm->submitted()) {
@@ -88,11 +86,16 @@ class Generator extends AbstractController
             }
         }
 
+        $entities = array_keys($this->file->getPackStruct($packName) ?: []);
+        $data = $this->file->getEntityStruct($packName, $entityName);
+
         $this->render('form', 'GeneratorPack', [
             'entityForm' => $this->entityForm->getForm(),
             'dataForm' => $this->dataForm->getForm(),
-            'lines' => $data['lines'] ?? [],
             'packName' => $data['entity'] ?? null,
+            'entityName' => $entityName ?: null,
+            'entities' => $entities,
+            'lines' => $data['lines'] ?? [],
         ]);
     }
 }

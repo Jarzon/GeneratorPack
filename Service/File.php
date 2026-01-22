@@ -72,10 +72,7 @@ class File
 
     public function savePackStruct(): void
     {
-        $data = $this->getPackStruct($this->packName);
-        if($data === false) {
-            return;
-        }
+        $data = $this->getPackStruct($this->packName) ?: [];
         $data[$this->entityName] = $this->data;
         file_put_contents("{$this->packDir}/config/packStruct.php", serialize($data));
     }

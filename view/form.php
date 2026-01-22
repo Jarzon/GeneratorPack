@@ -3,6 +3,7 @@
  * @var \Prim\View $this
  * @var \Jarzon\Form $entityForm
  * @var \Jarzon\Form $dataForm
+ * @var array $entities
  */
 
 $this->start('default'); ?>
@@ -18,12 +19,27 @@ $this->start('default'); ?>
             </tr>
         </table>
 
-        <?=$entityForm('form')->row?>
-            <h3>Entity</h3>
-            <div class="listForm"><?=$entityForm('entity_name')->label('Entity name')->row?></div>
-            <div class="listForm"><?=$entityForm('crud')->label('Crud')->row?></div>
+        <table class="table responsiveTable">
+            <tr>
+                <th>Entity</th>
+                <th>Actions</th>
+            </tr>
+            <?php foreach($entities as $entity): ?>
+                <tr>
+                    <td><?=$entity ?></td>
+                    <td><a href="/admin/generator/modify/TestPack/<?=$entity ?>">Modify</a></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
 
-            <h3>Data</h3>
+        <?=$entityForm('form')->row?>
+            <?php if($entityName === null): ?>
+                <h3>New entity</h3>
+                <div class="listForm"><?=$entityForm('entity_name')->label('Entity name')->row?></div>
+                <div class="listForm"><?=$entityForm('crud')->label('Crud')->row?></div>
+            <?php endif; ?>
+
+            <h3><?=$entityName ?></h3>
             <table class="table responsiveTable">
                 <thead>
                     <tr>
