@@ -17,6 +17,7 @@ class PackForm extends FormAbstract
     {
         $this->form
             ->text('pack_name')
+            ->autocomplete('off')
             ->submit();
     }
 }

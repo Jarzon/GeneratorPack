@@ -17,7 +17,9 @@ class EntityForm extends FormAbstract
     {
         $this->form
             ->text('entity_name')
-            ->checkbox('crud')->value(true)
+                ->autocomplete('off')
+            ->checkbox('crud')
+                ->value(true)
             ->submit();
     }
 }
