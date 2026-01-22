@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 /**
  * @var \Prim\View $this
- * @var \Jarzon\Form $packForm
+ * @var \Jarzon\Form $entityForm
  * @var \Jarzon\Form $dataForm
  */
 
@@ -18,11 +18,10 @@ $this->start('default'); ?>
             </tr>
         </table>
 
-        <?=$packForm('form')->row?>
-            <h3>Pack</h3>
-            <div class="listForm"><?=$packForm('pack_name')->label('Pack name')->row?></div>
-            <div class="listForm"><?=$packForm('entity_name')->label('Entity name')->row?></div>
-            <div class="listForm"><?=$packForm('crud')->label('Crud')->row?></div>
+        <?=$entityForm('form')->row?>
+            <h3>Entity</h3>
+            <div class="listForm"><?=$entityForm('entity_name')->label('Entity name')->row?></div>
+            <div class="listForm"><?=$entityForm('crud')->label('Crud')->row?></div>
 
             <h3>Data</h3>
             <table class="table responsiveTable">
@@ -44,9 +43,9 @@ $this->start('default'); ?>
 
             <hr class="separator">
 
-            <?=$packForm('save')->value('Save')->row?>
+            <?=$entityForm('save')->value('Save')->row?>
 
-        <?=$packForm('/form')->row?>
+        <?=$entityForm('/form')->row?>
     </div>
 <?php $this->end() ?>
 

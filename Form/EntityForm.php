@@ -4,7 +4,7 @@ namespace GeneratorPack\Form;
 
 use Jarzon\FormAbstract;
 
-class PackForm extends FormAbstract
+class EntityForm extends FormAbstract
 {
     public function __construct()
     {
@@ -16,7 +16,8 @@ class PackForm extends FormAbstract
     public function build(): void
     {
         $this->form
-            ->text('pack_name')
+            ->text('entity_name')
+            ->checkbox('crud')->value(true)
             ->submit();
     }
 }

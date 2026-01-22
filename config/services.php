@@ -14,6 +14,7 @@ return [
 
         return [
             $dic->form('GeneratorPack\PackForm'),
+            $dic->form('GeneratorPack\EntityForm'),
             $dic->form('GeneratorPack\DataForm'),
             $dic->service('GeneratorPack\File'),
         ];

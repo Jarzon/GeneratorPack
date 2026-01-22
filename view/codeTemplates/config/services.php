@@ -22,22 +22,22 @@ return [
         \$dic->service('UserPack\User')->verification();
 
         return [
-            \$dic->model('{$file->pack['pack_name']}\\{$file->entityName}Model'),
+            \$dic->model('{$file->packName}\\{$file->entityName}Model'),
         ];
     },
     Form::class => function(Container \$dic) {
         \$dic->service('UserPack\User')->verification();
 
         return [
-            \$dic->model('{$file->pack['pack_name']}\\{$file->entityName}Model'),
-            \$dic->form('{$file->pack['pack_name']}\\{$file->entityName}Form')
+            \$dic->model('{$file->packName}\\{$file->entityName}Model'),
+            \$dic->form('{$file->packName}\\{$file->entityName}Form')
         ];
     },
     Actions::class => function(Container \$dic) {
         \$dic->service('UserPack\User')->verification();
 
         return [
-            \$dic->model('{$file->pack['pack_name']}\\{$file->entityName}Model')
+            \$dic->model('{$file->packName}\\{$file->entityName}Model')
         ];
     },
 ];

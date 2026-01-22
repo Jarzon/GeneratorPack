@@ -2,6 +2,7 @@
 
 namespace GeneratorPack\Controller;
 
+use GeneratorPack\Form\EntityForm;
 use Jarzon\ValidationException;
 use GeneratorPack\Service\File;
 use GeneratorPack\Form\DataForm;
@@ -14,6 +15,7 @@ class Generator extends AbstractController
         View $view,
         array $options,
         public PackForm $packForm,
+        public EntityForm $entityForm,
         public DataForm $dataForm,
         public File $file
     ) {
@@ -39,6 +41,29 @@ class Generator extends AbstractController
         ]);
     }
 
+    public function createPack(): void
+    {
+        if($this->packForm->submitted()) {
+            try {
+                $packValues = $this->packForm->validation();
+            }
+            catch(ValidationException $e) {
+                $this->message('alert', $e->getMessage());
+            }
+
+            if(!empty($packValues) && !empty($dataValues)) {
+                $this->file->setPack($packValues['pack_name']);
+                $this->file->setData($dataValues);
+
+                $this->file->createPack();
+            }
+        }
+
+        $this->render('createpack', 'GeneratorPack', [
+            'packForm' => $this->packForm->getForm(),
+        ]);
+    }
+
     public function create(): void
     {
         if($this->packForm->submitted()) {
@@ -51,7 +76,7 @@ class Generator extends AbstractController
             }
 
             if(!empty($packValues) && !empty($dataValues)) {
-                $this->file->setPack($packValues);
+                $this->file->setPack($packValues['pack_name']);
                 $this->file->setData($dataValues);
 
                 $this->file->createPack();
@@ -68,25 +93,23 @@ class Generator extends AbstractController
     {
         try {
             $data = file_get_contents("{$this->options['root']}src/{$packName}/config/packStruct.php");
-        } catch (\Exception $e) {
-            $this->message('error', "Can't find $packName struct file");
-            $this->redirect('/admin/generator/');
-        }
-        $data = unserialize($data);
+            $data = unserialize($data);
+        } catch (\Exception $e) {}
 
-        debug($data);
 
-        if($this->packForm->submitted()) {
+        $this->file->setPack($packName);
+
+        if($this->entityForm->submitted()) {
             try {
-                $packValues = $this->packForm->validation();
+                $entityValues = $this->entityForm->validation();
                 $dataValues = $this->dataForm->validation();
             }
             catch(ValidationException $e) {
                 $this->message('alert', $e->getMessage());
             }
 
-            if(!empty($packValues) && !empty($dataValues)) {
-                $this->file->setPack($packValues);
+            if(!empty($dataValues)) {
+                $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
                 $this->file->setData($dataValues);
 
                 $this->file->createPack();
@@ -94,9 +117,10 @@ class Generator extends AbstractController
         }
 
         $this->render('form', 'GeneratorPack', [
-            'packForm' => $this->packForm->getForm(),
+            'entityForm' => $this->entityForm->getForm(),
             'dataForm' => $this->dataForm->getForm(),
-            'lines' => $data,
+            'lines' => $data['lines'] ?? [],
+            'packName' => $data['entity'] ?? null,
         ]);
     }
 }

@@ -9,7 +9,7 @@ $title = 'Packs';
 
 $this->start('default');
 ?>
-    <a class="buttonLink add" href="/admin/generator/create">Create new pack</a>
+    <a class="buttonLink add" href="/admin/generator/createpack">Create new pack</a>
 
 <table class="table">
     <tr>

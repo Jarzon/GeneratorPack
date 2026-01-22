@@ -6,13 +6,14 @@ use Prim\View;
 
 class File
 {
-    public array $pack;
     public array $data;
 
     public string $packDir;
+    public string $packName;
     public string $entityName;
     public string $entityNameLC;
     public string $targetPackNamespace;
+    public bool $createCRUD;
 
     public function __construct(
         public array $options,
@@ -23,29 +24,34 @@ class File
         ];
     }
 
-    public function setPack(array $packValues): void
+    public function setPack(string $packName): void
     {
-        if(!str_contains($packValues['pack_name'], 'Pack')) {
-            $packValues['pack_name'] = $packValues['pack_name'] . 'Pack';
+        if(!str_contains($packName, 'Pack')) {
+            $packName = $packName . 'Pack';
+        }
+        $packName = ucfirst($packName);
+
+        $this->packDir = $this->options['root'] . 'src/' . $packName;
+        $this->packName = $packName;
+    }
+
+    public function setEntity(string $entityName, bool $crud): void
+    {
+        if(str_contains($entityName, 'Pack')) {
+            $entityName = str_replace('Pack', '', $entityName);
         }
 
-        $packValues['pack_name'] = ucfirst($packValues['pack_name']);
+        $this->entityName = ucfirst($entityName);
+        $this->entityNameLC = lcfirst($entityName);
 
-        if(!str_contains($packValues['pack_name'], 'Pack')) {
-            $packValues['entity_name'] = str_replace('Pack', '', $packValues['entity_name']);
-        }
-
-        $this->entityName = ucfirst($packValues['entity_name']);
-        $this->entityNameLC = lcfirst($packValues['entity_name']);
-
-        $this->targetPackNamespace = "{$this->options['project_name']}\\{$packValues['pack_name']}";
-        $this->pack = $packValues;
-        $this->packDir = $this->options['root'] . 'src/' . $packValues['pack_name'];
+        $this->targetPackNamespace = "{$this->options['project_name']}\\{$this->packName}";
+        $this->packDir = $this->options['root'] . 'src/' . $this->packName;
+        $this->createCRUD = $crud;
     }
 
     public function savePackStruct(): void
     {
-        file_put_contents("{$this->packDir}/config/packStruct.php", serialize($this->data));
+        file_put_contents("{$this->packDir}/config/packStruct.php", serialize(['entity' => $this->entityName, 'lines' => $this->data]));
     }
 
     public function setData(array $dataValues): void
@@ -63,7 +69,7 @@ class File
         $this->generateForm();
         $this->generateModel();
 
-        if($this->pack['crud'] === true) {
+        if($this->createCRUD) {
             $this->generateRouting();
             $this->generateServices();
             $this->generateControllers();
