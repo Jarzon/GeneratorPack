@@ -31,9 +31,13 @@ class DataForm extends FormAbstract
             ->text('default[]')
 
             ->select('public[]')
-            ->addOptions([
-                'private' => 'private', 'public' => 'public'
-            ])
-            ->required();
+                ->addOptions([
+                    'private' => 'private', 'public' => 'public'
+                ])
+            ->required()
+
+            ->hidden('status[]')
+                ->value(0)
+            ;
     }
 }

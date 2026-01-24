@@ -1,23 +1,28 @@
 let lines = document.querySelector('#lines');
 
-function generateRow(name = null, type = null, defaultValue = null, isPublic = null) {
+function generateRow(status = null, name = null, type = null, defaultValue = null, isPublic = null) {
     let baseForm = document.querySelector('#baseForm').cloneNode(true);
-    let typeSelect = baseForm.querySelector('#type');
-    let value = baseForm.querySelector('#default');
+    let typeSelect = baseForm.querySelector('.type');
+    let valueInput = baseForm.querySelector('.default');
+    let statusInput = baseForm.querySelector('.status');
+
+    baseForm.addEventListener('change', function () {
+        statusInput.value = '2';
+    });
 
     typeSelect.addEventListener('change', function () {
         let type = this.value;
 
         if (type === 'number') {
-            value.setAttribute('type', 'number');
-            value.value = '0';
+            valueInput.setAttribute('type', 'number');
+            valueInput.value = '0';
         }
         else if (type === 'datetime' || type === 'date') {
-            value.setAttribute('type', 'text');
-            value.value = 'CURRENT_TIMESTAMP';
+            valueInput.setAttribute('type', 'text');
+            valueInput.value = 'CURRENT_TIMESTAMP';
         } else {
-            value.setAttribute('type', 'text');
-            value.value = '';
+            valueInput.setAttribute('type', 'text');
+            valueInput.value = '';
         }
     });
 
@@ -39,7 +44,14 @@ function generateRow(name = null, type = null, defaultValue = null, isPublic = n
     let remove = document.createElement('div');
     remove.innerHTML = '<img alt="Remove" src="/img/delete.svg">';
     remove.onclick = function() {
-        lines.removeChild(baseForm);
+        if(statusInput.value === '-1') {
+            remove.parentElement.parentElement.style.background = '';
+            statusInput.value = '2';
+        }
+        else {
+            remove.parentElement.parentElement.style.background = 'red';
+            statusInput.value = '-1';
+        }
     };
 
     actions.append(moveup);
@@ -49,32 +61,36 @@ function generateRow(name = null, type = null, defaultValue = null, isPublic = n
     baseForm.appendChild(actions);
 
     if(name !== null) {
-        baseForm.querySelector('#name').value = name;
+        baseForm.querySelector('.name').value = name;
     }
 
     if(type !== null) {
-        baseForm.querySelector('#type').value = type;
+        baseForm.querySelector('.type').value = type;
     }
 
     if(defaultValue !== null) {
-        baseForm.querySelector('#default').value = defaultValue;
+        baseForm.querySelector('.default').value = defaultValue;
     }
 
     if(isPublic !== null) {
-        baseForm.querySelector('#public').value = isPublic;
+        baseForm.querySelector('.public').value = isPublic;
+    }
+
+    if(status !== null) {
+        baseForm.querySelector('.status').value = status;
     }
 
     return baseForm;
 }
 
-function addLine(name = null, type = null, defaultValue = null, isPublic = null) {
-    let row = generateRow(name, type, defaultValue, isPublic);
+function addLine(name = null, type = null, defaultValue = null, isPublic = null, status = null) {
+    let row = generateRow(status, name, type, defaultValue, isPublic);
 
     lines.appendChild(row);
 }
 
 function addNewLine() {
-    let row = generateRow();
+    let row = generateRow(1);
 
     if(lines.children.length >= 1) {
         lines.children[1].after(row);
@@ -88,11 +104,17 @@ window.addEventListener('load', function () {
         addNewLine();
     });
 
-    document.querySelector('#pack_name').addEventListener('change', function (e) {
-        document.querySelector('#entity_name').setAttribute('value', document.querySelector('#pack_name').value);
-    });
+    let packName = document.querySelector('#pack_name');
+    if(packName) {
+        packName.addEventListener('change', function (e) {
+            document.querySelector('#entity_name').setAttribute('value', document.querySelector('#pack_name').value);
+        });
+    }
 
-    document.querySelector('#entity_name').addEventListener('click', function (e) {
-        document.querySelector('#entity_name').setAttribute('value', '');
-    });
+    let entityName = document.querySelector('#entity_name');
+    if(entityName) {
+        entityName.addEventListener('click', function (e) {
+            entityName.setAttribute('value', '');
+        });
+    }
 });

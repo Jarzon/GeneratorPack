@@ -10,13 +10,13 @@ $this->start('default'); ?>
     <div class="box">
         <table>
             <tr id="baseForm">
-                <td><?=$dataForm('name')->id('name')->row?></td>
-                <td><?=$dataForm('type')->id('type')->row?></td>
-                <td><?=$dataForm('min')->id('min')->row?></td>
-                <td><?=$dataForm('max')->id('max')->row?></td>
-                <td><?=$dataForm('default')->id('default')->row?></td>
-                <td><?=$dataForm('public')->id('public')->row?></td>
-                <td><?=$dataForm('status')->id('status')->row?></td>
+                <td><?=$dataForm('name')->class('name')->row?></td>
+                <td><?=$dataForm('type')->class('type')->row?></td>
+                <td><?=$dataForm('min')->class('min')->row?></td>
+                <td><?=$dataForm('max')->class('max')->row?></td>
+                <td><?=$dataForm('default')->class('default')->row?></td>
+                <td><?=$dataForm('public')->class('public')->row?></td>
+                <td><?=$dataForm('status')->class('status')->row?></td>
             </tr>
         </table>
 
