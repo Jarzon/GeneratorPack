@@ -25,6 +25,4 @@ $this->start('default'); ?>
 </style>
 <?php $this->end() ?>
 
-<?php $this->start('js') ?>
-
-<?php $this->end() ?>
+<?php $this->insert('include', 'GeneratorPack'); ?>

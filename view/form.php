@@ -16,6 +16,7 @@ $this->start('default'); ?>
                 <td><?=$dataForm('max')->id('max')->row?></td>
                 <td><?=$dataForm('default')->id('default')->row?></td>
                 <td><?=$dataForm('public')->id('public')->row?></td>
+                <td><?=$dataForm('status')->id('status')->row?></td>
             </tr>
         </table>
 
@@ -51,7 +52,7 @@ $this->start('default'); ?>
                         <th>Max</th>
                         <th>Default</th>
                         <th>Visibility</th>
-                        <th>Action</th>
+                        <th colspan="2">Action</th>
                     </tr>
                 </thead>
                 <tbody id="lines"></tbody>
@@ -61,7 +62,7 @@ $this->start('default'); ?>
 
             <hr class="separator">
 
-            <?=$entityForm('save')->value('Save')->row?>
+        <?=$entityForm('save')->value('Save')->row?>
 
         <?=$entityForm('/form')->row?>
     </div>
@@ -86,4 +87,6 @@ $this->start('default'); ?>
             });
         </script>
     <?php endif; ?>
-<?php $this->end() ?>
+<?php $this->end(); ?>
+
+<?php $this->insert('include', 'GeneratorPack'); ?>
