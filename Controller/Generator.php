@@ -83,11 +83,13 @@ class Generator extends AbstractController
             }
 
             if(!empty($dataValues)) {
-                if($entityName === null) $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
+                if(!empty($entityValues)) $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
                 $this->file->setData($dataValues);
 
                 if($entityName === null) {
                     $this->file->createEntity();
+                    $this->message('ok', 'The entity was successful created');
+                    $this->redirect("/admin/generator/modify/$packName/$entityName");
                 } else {
                     $this->file->updateEntity();
                 }
