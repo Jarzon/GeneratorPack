@@ -18,6 +18,7 @@ class {$file->entityName}Table extends EntityBase
 
 EOT;
 foreach($file->data as $row):
+    if($row['status'] === '-1') continue;
     $type = $file->getTableColumnType($row['type'], true);
     ?>
     public <?=$type ?> $<?=$row['name'] ?>;
@@ -30,6 +31,7 @@ foreach($file->data as $row):
         $this->table('<?=$file->entityNameLC ?>');
 
 <?php foreach($file->data as $row):
+    if($row['status'] === '-1') continue;
     $type = $file->getTableColumnType($row['type']);
     ?>
         $this-><?=$row['name'] ?> = $this-><?=$type ?>('<?=$row['name'] ?>');

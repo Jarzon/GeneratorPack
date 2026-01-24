@@ -15,6 +15,7 @@ class File
     public string $targetPackNamespace;
     public bool $createCRUD;
 
+    /** @param array<mixed> $options */
     public function __construct(
         public array $options,
         public View $view
@@ -49,6 +50,7 @@ class File
         $this->createCRUD = $crud;
     }
 
+    /** @return array<mixed>|false */
     public function getEntityStruct(string $packName, string $entityName): array|false
     {
         if($data = $this->getPackStruct($packName)) {
@@ -60,6 +62,7 @@ class File
         return false;
     }
 
+    /** @return array<mixed>|false */
     public function getPackStruct(string $packName): array|false
     {
         try {
@@ -73,10 +76,25 @@ class File
     public function savePackStruct(): void
     {
         $data = $this->getPackStruct($this->packName) ?: [];
-        $data[$this->entityName] = ['crud' => $this->createCRUD, 'lines' => $this->data];
+        $data[$this->entityName] = [
+            'crud' => $this->createCRUD,
+            'lines' => $this->getData()
+        ];
         file_put_contents("{$this->packDir}/config/packStruct.php", serialize($data));
     }
 
+    /** @return array<mixed> */
+    public function getData(): array
+    {
+        $data = $this->data;
+        foreach ($data as $i => $value) {
+            if($value['status'] === '-1') unset($data[$i]);
+            else unset($data[$i]['status']);
+        }
+        return $data;
+    }
+
+    /** @param array<mixed> $dataValues */
     public function setData(array $dataValues): void
     {
         $this->data = $dataValues;
@@ -95,7 +113,7 @@ class File
 
         $this->generateTableEntity();
         $this->generateEntity();
-        $this->generatePhinx();
+        $this->generatePhinx(true);
         $this->generateForm();
         $this->generateModel();
 
@@ -104,6 +122,22 @@ class File
             $this->generateServices();
             $this->generateControllers();
             $this->generateViews();
+        }
+
+        $this->savePackStruct();
+    }
+
+    public function updateEntity(): void
+    {
+        $this->generateTableEntity(true);
+        $this->generatePhinx();
+
+        $this->generateEntity(); // can't regenerate it without erassing stuff
+        $this->generateForm(); // show the lines of code to be added if wanted
+
+        if($this->createCRUD) {
+            $this->generateViews();
+            // show the lines of code for the view to be added if wanted (form, table column too?)
         }
 
         $this->savePackStruct();
@@ -138,7 +172,7 @@ class File
         return $type;
     }
 
-    public function generateTableEntity(): void
+    public function generateTableEntity(bool $overwrite = false): void
     {
         $entityDir = $this->packDir . '/Entity';
 
@@ -148,7 +182,7 @@ class File
             'file' => $this,
         ]);
 
-        $this->createFile("$entityDir/{$this->entityName}Table.php", $file);
+        $this->createFile("$entityDir/{$this->entityName}Table.php", $file, $overwrite);
     }
 
     public function generateEntity(): void
@@ -164,16 +198,17 @@ class File
         $this->createFile("$entityDir/{$this->entityName}.php", $file);
     }
 
-    public function generatePhinx(): void
+    public function generatePhinx(bool $isNew = false): void
     {
         $phinxDir = $this->packDir . '/migrations/';
         $this->createDir($phinxDir);
 
         $file = $this->view->fetch('codeTemplates/phinxMigration', 'GeneratorPack', [
             'file' => $this,
+            'isNew' => $isNew,
         ]);
 
-        $this->createFile($phinxDir . date('YmdHis') . "_{$this->entityNameLC}_init.php", $file);
+        $this->createFile($phinxDir . date('YmdHis') . "_{$this->entityNameLC}_".($isNew? 'init' : 'update').".php", $file);
     }
 
     public function generateForm(): void
@@ -188,6 +223,7 @@ class File
         $this->createFile("$formDir/{$this->entityName}Form.php", $file);
     }
 
+    /** @param array<mixed> $row */
     public function generateFormLine(array $row): string
     {
         $type = $row['type'];
@@ -330,9 +366,9 @@ class File
         }
     }
 
-    public function createFile(string $location, string $content): void
+    public function createFile(string $location, string $content, bool $overwrite = false): void
     {
-        if(file_exists($location)) {
+        if(!$overwrite && file_exists($location)) {
             throw new \Exception("File $location already exists");
         }
 

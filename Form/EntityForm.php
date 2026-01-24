@@ -18,6 +18,7 @@ class EntityForm extends FormAbstract
         $this->form
             ->text('entity_name')
                 ->autocomplete('off')
+                ->attributes(['minLenght' => '3'])
             ->checkbox('crud')
                 ->value(true)
             ->submit();

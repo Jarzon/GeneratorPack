@@ -3,6 +3,7 @@ declare(strict_types=1);
 /**
  * @var \Prim\View $this
  * @var \GeneratorPack\Service\File $file
+  * @var bool $isNew
  */
 
 $columnsType = [
@@ -24,13 +25,15 @@ $columnsType = [
     'password' => 'string',
 ];
 
+$className = $file->entityName. ($isNew? 'Init' : 'Update');
+
 echo <<<EOT
 <?php declare(strict_types=1);
 use Phinx\Migration\AbstractMigration;
 
-class {$file->entityName}Init extends AbstractMigration
+class {$className} extends AbstractMigration
 {
-    public function change()
+    public function change(): void
     {
         \$table = \$this->table('{$file->entityNameLC}');
         \$table
@@ -41,8 +44,31 @@ EOT;
 foreach ($file->data as $row) {
     if($row['name'] === 'id') continue;
 
-    echo "            ->addColumn('{$row['name']}', '{$columnsType[$row['type']]}'";
-    if(!empty($row['max']) || $row['type'] === 'text' || (isset($row['default']) && $row['default'] !== '')) {
+    $isFullLine = false;
+
+    // new line
+    if($row['status'] === '1') {
+        echo "            ->addColumn('{$row['name']}', '{$columnsType[$row['type']]}'";
+        $isFullLine = true;
+    }
+    // updated line
+    else if($row['status'] === '2') {
+        echo "            ->changeColumn('{$row['name']}', '{$columnsType[$row['type']]}'";
+        $isFullLine = true;
+    }
+    // deleted line
+    else if($row['status'] === '-1') {
+        echo "            ->removeColumn('{$row['name']}'";
+    }
+
+    if(
+        $isFullLine
+        && (
+            !empty($row['max'])
+            || $row['type'] === 'text'
+            || (isset($row['default']) && $row['default'] !== '')
+        )
+    ) {
         echo ', [';
 
         if(!empty($row['max'])) {
@@ -58,9 +84,9 @@ foreach ($file->data as $row) {
         echo "]";
     }
 
-    echo ")\n";
+    if($row['status'] !== '0') echo ")\n";
 
 } ?>
-            ->create();
+            -><?=$isNew? 'create' : 'save' ?>();
     }
 }

@@ -89,7 +89,7 @@ class Generator extends AbstractController
                 if($entityName === null) {
                     $this->file->createEntity();
                 } else {
-                    $this->file->createEntity();
+                    $this->file->updateEntity();
                 }
             }
         }
