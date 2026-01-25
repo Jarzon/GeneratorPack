@@ -111,10 +111,10 @@ class File
 
         $this->createConfigDir();
 
-        $this->generateTableEntity();
-        $this->generateEntity();
+        $this->generateTableEntity(true);
+        $this->generateEntity(true);
         $this->generatePhinx(true);
-        $this->generateForm();
+        $this->generateForm(true);
         $this->generateModel();
 
         if($this->createCRUD) {
@@ -127,20 +127,19 @@ class File
         $this->savePackStruct();
     }
 
-    public function updateEntity(): void
+    public function updateEntity(): array
     {
         $this->generateTableEntity(true);
         $this->generatePhinx();
 
-        $this->generateEntity(); // can't regenerate it without erassing stuff
-        $this->generateForm(); // show the lines of code to be added if wanted
-
-        if($this->createCRUD) {
-            $this->generateViews();
-            // show the lines of code for the view to be added if wanted (form, table column too?)
-        }
+        $array = [
+            'entity' => $this->generateEntity(),
+            'form class' => $this->generateForm(),
+            'form view' => $this->createCRUD? $this->generateFormView() : ''
+        ];
 
         $this->savePackStruct();
+        return $array;
     }
 
     public function getTableColumnType(string $type, bool $isType = false): string
@@ -185,7 +184,7 @@ class File
         $this->createFile("$entityDir/{$this->entityName}Table.php", $file, $overwrite);
     }
 
-    public function generateEntity(): void
+    public function generateEntity(bool $isNew = false): string|null
     {
         $entityDir = $this->packDir . '/Entity';
 
@@ -193,9 +192,13 @@ class File
 
         $file = $this->view->fetch('codeTemplates/entity', 'GeneratorPack', [
             'file' => $this,
+            'isNew' => $isNew,
         ]);
 
+        if(!$isNew) return $file;
+
         $this->createFile("$entityDir/{$this->entityName}.php", $file);
+        return null;
     }
 
     public function generatePhinx(bool $isNew = false): void
@@ -211,7 +214,7 @@ class File
         $this->createFile($phinxDir . date('YmdHis') . "_{$this->entityNameLC}_".($isNew? 'init' : 'update').".php", $file);
     }
 
-    public function generateForm(): void
+    public function generateForm(bool $isNew = false): string|null
     {
         $formDir = $this->packDir . '/Form';
 
@@ -219,8 +222,13 @@ class File
             'file' => $this,
         ]);
 
+        if(!$isNew) {
+            return $file;
+        }
+
         $this->createDir($formDir);
         $this->createFile("$formDir/{$this->entityName}Form.php", $file);
+        return null;
     }
 
     /** @param array<mixed> $row */
@@ -344,9 +352,7 @@ class File
             $this->createDir($modeDir);
         }
 
-        $file = $this->view->fetch('codeTemplates/view/form', 'GeneratorPack', [
-            'file' => $this,
-        ]);
+        $file = $this->generateFormView(true);
 
         $this->createFile($viewFile, $file);
 
@@ -379,5 +385,14 @@ class File
     {
         $configDir = $this->packDir . '/config';
         $this->createDir($configDir);
+    }
+
+    public function generateFormView(bool $isNew = false): string
+    {
+        $file = $this->view->fetch('codeTemplates/view/form', 'GeneratorPack', [
+            'file' => $this,
+            'isNew' => $isNew
+        ]);
+        return $file;
     }
 }

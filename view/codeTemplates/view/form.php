@@ -3,10 +3,12 @@ declare(strict_types=1);
 /**
  * @var \Prim\View $this
  * @var \GeneratorPack\Service\File $file
+ * @var bool $isNew
  */
 
-// TODO: based $this->data generate the columns
-echo <<<EOT
+
+if($isNew) {
+    echo <<<EOT
 <?php declare(strict_types=1);
 /**
  * @var \Prim\View \$this
@@ -29,6 +31,7 @@ echo <<<EOT
         <form action="/{$file->entityNameLC}s/<?=(\$new)? 'create': "edit/\${$file->entityNameLC}->id"?>" method="POST">
             
 EOT;
+}
 
 foreach ($file->data as $row) {
     if($row['public'] === 'private') continue;
@@ -37,7 +40,8 @@ foreach ($file->data as $row) {
             ";
 }
 
-echo <<<EOT
+if($isNew) {
+    echo <<<EOT
 
             <?=\$form('submit')->value(\$_('save {$file->entityNameLC}'))->row?>
             <a class="cancel_button" href="<?=cancel('/{$file->entityNameLC}s/')?>"><?=\$_("cancel")?></a>
@@ -54,3 +58,4 @@ echo <<<EOT
 <?php \$this->end() ?>
 
 EOT;
+}

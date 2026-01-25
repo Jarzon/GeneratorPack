@@ -65,11 +65,11 @@ function generateRow(status = null, name = null, type = null, defaultValue = nul
     }
 
     if(type !== null) {
-        baseForm.querySelector('.type').value = type;
+        typeSelect.value = type;
     }
 
     if(defaultValue !== null) {
-        baseForm.querySelector('.default').value = defaultValue;
+        valueInput.value = defaultValue;
     }
 
     if(isPublic !== null) {
@@ -77,7 +77,7 @@ function generateRow(status = null, name = null, type = null, defaultValue = nul
     }
 
     if(status !== null) {
-        baseForm.querySelector('.status').value = status;
+        statusInput.value = status;
     }
 
     return baseForm;

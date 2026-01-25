@@ -83,7 +83,7 @@ class Generator extends AbstractController
             }
 
             if(!empty($dataValues)) {
-                if(!empty($entityValues)) $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
+                if($entityName === null) $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
                 $this->file->setData($dataValues);
 
                 if($entityName === null) {
@@ -91,7 +91,8 @@ class Generator extends AbstractController
                     $this->message('ok', 'The entity was successful created');
                     $this->redirect("/admin/generator/modify/$packName/$entityName");
                 } else {
-                    $this->file->updateEntity();
+                    $newCode = $this->file->updateEntity();
+                    $this->message('ok', 'The entity was successful updated');
                 }
             }
         }
@@ -105,6 +106,7 @@ class Generator extends AbstractController
             'entityName' => $entityName ?: null,
             'entities' => $entities,
             'lines' => $data['lines'] ?? [],
+            'newCode' => $newCode ?? []
         ]);
     }
 }

@@ -3,9 +3,11 @@ declare(strict_types=1);
 /**
  * @var \Prim\View $this
  * @var \GeneratorPack\Service\File $file
+ * @var bool $isNew
  */
 
-echo <<<EOT
+if($isNew) {
+    echo <<<EOT
 <?php declare(strict_types=1);
 
 namespace {$file->targetPackNamespace}\Form;
@@ -22,17 +24,22 @@ class {$file->entityName}Form extends FormAbstract
         \$this->build();
     }
     
+    
+
+EOT;
+}
+if($isNew): ?>
     public function build(): void
     {
         \$this->form
 
-EOT;
-
+<?php endif;
 foreach ($file->data as $row) {
-    if($row['public'] === 'private') continue;
+    if($row['public'] === 'private' || (!$isNew && $row['status'] !== '1' && $row['status'] !== '2')) continue;
 
     echo $file->generateFormLine($row);
-} ?>
+}
+if($isNew): ?>
         ->submit();
     }
 
@@ -40,12 +47,15 @@ foreach ($file->data as $row) {
     {
         $this->form
 <?php
+endif;
 foreach ($file->data as $row) {
-    if($row['public'] === 'public') continue;
+    if($row['public'] === 'public' || (!$isNew && $row['status'] !== '1' && $row['status'] !== '2')) continue;
 
     echo $file->generateFormLine($row);
-} ?>
+}
+if($isNew): ?>
 
         ;
     }
 }
+<?php endif; ?>

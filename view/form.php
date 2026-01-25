@@ -4,9 +4,20 @@
  * @var \Jarzon\Form $entityForm
  * @var \Jarzon\Form $dataForm
  * @var array $entities
+ * @var string|null $entityName
+ * @var array $lines
+ * @var array $newCode
  */
 
 $this->start('default'); ?>
+    <?php foreach($newCode as $i => $code):
+        if(trim($code) === '') continue;
+    ?>
+        <div>
+            <h3><?=$i ?></h3>
+            <pre><?=htmlentities($code) ?></pre>
+        </div>
+    <?php endforeach; ?>
     <div class="box">
         <table>
             <tr id="baseForm">
