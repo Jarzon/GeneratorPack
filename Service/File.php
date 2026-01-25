@@ -111,6 +111,7 @@ class File
 
         $this->createConfigDir();
 
+        $this->createAssetsFolders();
         $this->generateTableEntity(true);
         $this->generateEntity(true);
         $this->generatePhinx(true);
@@ -169,6 +170,17 @@ class File
         }
 
         return $type;
+    }
+
+    public function createAssetsFolders(): void
+    {
+        $dir = $this->packDir . '/assets';
+
+        $this->createDir($dir);
+
+        $this->createDir("$dir/js");
+        $this->createDir("$dir/css");
+        $this->createDir("$dir/img");
     }
 
     public function generateTableEntity(bool $overwrite = false): void
