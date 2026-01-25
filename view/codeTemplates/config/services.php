@@ -10,14 +10,9 @@ echo <<<EOT
 
 use Prim\Container;
 
-use {$file->targetPackNamespace}\Form\\{$file->entityName}Form;
 use {$file->targetPackNamespace}\Controller\\{Table, Form, Actions};
 
 return [
-    {$file->entityName}Form::class => function(Container \$dic) {
-        return [];
-    },
-
     Table::class => function(Container \$dic) {
         \$dic->service('UserPack\User')->verification();
 

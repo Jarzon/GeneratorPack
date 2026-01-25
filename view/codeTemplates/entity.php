@@ -13,7 +13,6 @@ if($isNew) {
 namespace {$file->targetPackNamespace}\Entity;
 
 use Jarzon\QueryBuilder\Entity\EntityBase;
-use Jarzon\QueryBuilder\Columns\{Numeric, Text, Date};
 
 class {$file->entityName} extends EntityBase
 {

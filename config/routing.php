@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-/** @var $this Router */
+/** @var Router $this */
 
 use Prim\Router;
 

@@ -395,4 +395,11 @@ class File
         ]);
         return $file;
     }
+
+    function getEntityTableName(): string
+    {
+        static $cache = "{$this->entityName}Table";
+
+        return $cache;
+    }
 }

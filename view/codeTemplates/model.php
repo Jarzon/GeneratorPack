@@ -5,13 +5,25 @@ declare(strict_types=1);
  * @var \GeneratorPack\Service\File $file
  */
 
+$entityFileTable = "{$file->entityName}Table";
+
+$select = [];
+
+foreach ($file->data as $row) {
+    if(!$row['public']) continue;
+
+    $select[] = "\$m->{$row['name']}";
+}
+
+$selectColumns = implode(', ', $select);
+
 echo <<<EOT
 <?php declare(strict_types=1);
 
 namespace {$file->targetPackNamespace}\Model;
 
 use Jarzon\QueryBuilder\Builder as QB;
-use {$file->targetPackNamespace}\Entity\\{$file->entityName};
+use {$file->targetPackNamespace}\Entity\\{$file->getEntityTableName()};
 use \PrimPack\Service\PDO;
 use Prim\Model;
 use {$file->options['project_name']}\UserPack\Service\User;
@@ -26,9 +38,10 @@ class {$file->entityName}Model extends Model
         parent::__construct(\$db, \$options);
     }
 
+    /** @param array<mixed> \$data */
     public function add{$file->entityName}(array \$data): int
     {
-        \$m = new {$file->entityName}();
+        \$m = new {$file->getEntityTableName()}();
 
         \$query = QB::insert(\$m)
             ->columns(\$data)
@@ -37,9 +50,10 @@ class {$file->entityName}Model extends Model
         return \$query->exec();
     }
 
+    /** @param array<mixed> \$data */
     public function update{$file->entityName}(array \$data, int \${$file->entityNameLC}_id): int
     {
-        \$m = new {$file->entityName}();
+        \$m = new {$file->getEntityTableName()}();
 
         \$query = QB::update(\$m)
             ->columns(\$data)
@@ -56,24 +70,10 @@ class {$file->entityName}Model extends Model
 
     public function get{$file->entityName}(int \${$file->entityNameLC}_id): object|false
     {
-        \$m = new {$file->entityName}();
+        \$m = new {$file->getEntityTableName()}();
 
         \$query = QB::select(\$m)
-            ->columns(
-EOT;
-
-$select = [];
-
-foreach ($file->data as $row) {
-    if(!$row['public']) continue;
-
-    $select[] = "\$m->{$row['name']}";
-}
-
-echo implode(', ', $select);
-
-echo <<<EOT
-)
+            ->columns($selectColumns)
             ->where(\$m->id, '=', \${$file->entityNameLC}_id)
             ->where(\$m->user_id, '=', \$this->user->id);
 
@@ -82,7 +82,7 @@ echo <<<EOT
 
     public function getNumberOf{$file->entityName}s(): int
     {
-        \$m = new {$file->entityName}();
+        \$m = new {$file->getEntityTableName()}();
 
         \$query = QB::select(\$m)
             ->columns(\$m->id->count()->alias('number'))
@@ -92,18 +92,16 @@ echo <<<EOT
         return (int)\$query->fetchColumn();
     }
 
+    /**
+     * @param array<mixed> \$columns
+     * @return array<mixed>|false
+     */
     public function get{$file->entityName}s(int \$mtart, int \$numberOfElements, string \$orderField, string \$order, array \$columns): array|false
     {
-        \$m = new {$file->entityName}();
+        \$m = new {$file->getEntityTableName()}();
 
         \$query = QB::select(\$m)
-            ->columns(
-EOT;
-
-echo implode(', ', $select);
-
-echo <<<EOT
-    )
+            ->columns($selectColumns)
             ->where(\$m->user_id, '=', \$this->user->id)
             ->limit(\$mtart, \$numberOfElements);
 

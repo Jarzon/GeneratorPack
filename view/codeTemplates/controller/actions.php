@@ -20,7 +20,7 @@ class Actions extends AbstractController
         View \$view,
         array \$options,
         public {$file->entityName}Model \${$file->entityName}Model
-        ) {
+    ) {
         parent::__construct(\$view, \$options);
     }
 

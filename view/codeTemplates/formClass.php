@@ -31,7 +31,7 @@ EOT;
 if($isNew): ?>
     public function build(): void
     {
-        \$this->form
+        $this->form
 
 <?php endif;
 foreach ($file->data as $row) {
