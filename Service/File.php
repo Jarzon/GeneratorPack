@@ -119,6 +119,7 @@ class File
         $this->generateModel();
 
         if($this->createCRUD) {
+            $this->generateTranslationMessages();
             $this->generateRouting();
             $this->generateServices();
             $this->generateControllers();
@@ -181,6 +182,15 @@ class File
         $this->createDir("$dir/js");
         $this->createDir("$dir/css");
         $this->createDir("$dir/img");
+    }
+
+    public function generateTranslationMessages(bool $overwrite = false): void
+    {
+        $file = $this->view->fetch('codeTemplates/config/messages', 'GeneratorPack', [
+            'file' => $this,
+        ]);
+
+        $this->createFile("$this->packDir/config/messages.json", $file, $overwrite);
     }
 
     public function generateTableEntity(bool $overwrite = false): void
