@@ -26,7 +26,7 @@ foreach($file->data as $row):
 
     public function __construct(string $alias = '')
     {
-        parent::__construct($alias);
+        parent::__construct($alias, <?=$file->entityName ?>::class);
 
         $this->table('<?=$file->entityNameLC ?>');
 
