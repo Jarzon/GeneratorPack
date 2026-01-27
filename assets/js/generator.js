@@ -45,11 +45,11 @@ function generateRow(status = null, name = null, type = null, defaultValue = nul
     remove.innerHTML = '<img alt="Remove" src="/img/delete.svg">';
     remove.onclick = function() {
         if(statusInput.value === '-1') {
-            remove.parentElement.parentElement.style.background = '';
+            remove.parentElement.parentElement.className = '';
             statusInput.value = '2';
         }
         else {
-            remove.parentElement.parentElement.style.background = 'red';
+            remove.parentElement.parentElement.className = 'deleted';
             statusInput.value = '-1';
         }
     };
@@ -89,11 +89,14 @@ function addLine(name = null, type = null, defaultValue = null, isPublic = null,
     lines.appendChild(row);
 }
 
+let lineCounter = 0;
+
 function addNewLine() {
     let row = generateRow(1);
 
     if(lines.children.length >= 1) {
-        lines.children[1].after(row);
+        lines.children[lineCounter].after(row);
+        lineCounter++;
     } else {
         lines.appendChild(row);
     }
