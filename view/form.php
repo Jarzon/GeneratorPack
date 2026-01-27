@@ -83,6 +83,10 @@ $this->start('default'); ?>
 
 <?php $this->start('css') ?>
 <style>
+    .actions div {
+        display: inline-block;
+    }
+
     input[type="text"], input[type="number"] {
         width: 100%;
     }

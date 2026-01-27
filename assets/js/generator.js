@@ -31,6 +31,7 @@ function generateRow(status = null, name = null, type = null, min = null, max = 
     baseForm.id = '';
 
     let actions = document.createElement('td');
+    actions.className = 'actions';
     let moveup = document.createElement('div');
     moveup.innerHTML = '<img alt="MoveUp" src="/img/arrow_up.svg">';
     moveup.onclick = function() {
