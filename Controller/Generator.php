@@ -87,7 +87,7 @@ class Generator extends AbstractController
                 $this->file->setData($dataValues);
 
                 if($entityName === null) {
-                    $this->file->createEntity();
+                    $this->file->createEntity($entityValues['disableCodeGeneration'] ?? false);
                     $this->message('ok', 'The entity was successful created');
                     $this->redirect("/admin/generator/modify/$packName/{$entityValues['entity_name']}");
                 } else {

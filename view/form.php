@@ -51,6 +51,7 @@ $this->start('default'); ?>
                 <h3>New entity</h3>
                 <div class="listForm"><?=$entityForm('entity_name')->label('Entity name')->row?></div>
                 <div class="listForm"><?=$entityForm('crud')->label('Crud')->row?></div>
+                <div class="listForm"><?=$entityForm('disableCodeGeneration')->label('Disable code generation')->row?></div>
             <?php endif; ?>
 
             <h3><?=$entityName ?></h3>

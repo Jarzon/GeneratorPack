@@ -105,20 +105,22 @@ class File
         $this->createDir($this->packDir);
     }
 
-    public function createEntity(): void
+    public function createEntity(bool $disableCodeGeneration): void
     {
+        if ($disableCodeGeneration) {
+            $this->savePackStruct();
+            return;
+        }
+
         $this->createDir($this->packDir);
-
         $this->createConfigDir();
-
         $this->createAssetsFolders();
         $this->generateTableEntity(true);
         $this->generateEntity(true);
         $this->generatePhinx(true);
         $this->generateForm(true);
         $this->generateModel();
-
-        if($this->createCRUD) {
+        if ($this->createCRUD) {
             $this->generateTranslationMessages();
             $this->generateRouting();
             $this->generateServices();

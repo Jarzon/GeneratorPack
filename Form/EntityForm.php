@@ -21,6 +21,10 @@ class EntityForm extends FormAbstract
                 ->attributes(['minLenght' => '3'])
             ->checkbox('crud')
                 ->value(true)
+            ->checkbox('disableCodeGeneration')
+                ->value(true)
             ->submit();
+
+        $this->updateValues(['crud' => true]);
     }
 }
