@@ -1,9 +1,11 @@
 let lines = document.querySelector('#lines');
 
-function generateRow(status = null, name = null, type = null, defaultValue = null, isPublic = null) {
+function generateRow(status = null, name = null, type = null, min = null, max = null, defaultValue = null, isPublic = null) {
     let baseForm = document.querySelector('#baseForm').cloneNode(true);
     let typeSelect = baseForm.querySelector('.type');
     let valueInput = baseForm.querySelector('.default');
+    let minInput = baseForm.querySelector('.min');
+    let maxInput = baseForm.querySelector('.max');
     let statusInput = baseForm.querySelector('.status');
 
     baseForm.addEventListener('change', function () {
@@ -68,6 +70,14 @@ function generateRow(status = null, name = null, type = null, defaultValue = nul
         typeSelect.value = type;
     }
 
+    if(min !== null) {
+        minInput.value = min;
+    }
+
+    if(max !== null) {
+        maxInput.value = max;
+    }
+
     if(defaultValue !== null) {
         valueInput.value = defaultValue;
     }
@@ -83,8 +93,8 @@ function generateRow(status = null, name = null, type = null, defaultValue = nul
     return baseForm;
 }
 
-function addLine(name = null, type = null, defaultValue = null, isPublic = null, status = null) {
-    let row = generateRow(status, name, type, defaultValue, isPublic);
+function addLine(name = null, type = null, min = null, max = null, defaultValue = null, isPublic = null, status = null) {
+    let row = generateRow(status, name, type, min, max, defaultValue, isPublic);
 
     lines.appendChild(row);
 }

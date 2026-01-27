@@ -5,6 +5,7 @@
  * @var \Jarzon\Form $dataForm
  * @var array $entities
  * @var string|null $entityName
+ * @var string|null $packName
  * @var array $lines
  * @var array $newCode
  */
@@ -40,7 +41,7 @@ $this->start('default'); ?>
                 <?php foreach($entities as $entity): ?>
                     <tr>
                         <td><?=$entity ?></td>
-                        <td><a href="/admin/generator/modify/TestPack/<?=$entity ?>">Modify</a></td>
+                        <td><a href="/admin/generator/modify/<?=$packName ?>/<?=$entity ?>">Modify</a></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -94,7 +95,7 @@ $this->start('default'); ?>
         <script>
             window.addEventListener('load', function () {
                 <?php foreach($lines as $line): ?>
-                addLine("<?= $line['name']?>", "<?= $line['type']?>","<?= $line['default']?>","<?= $line['public']?>");
+                addLine("<?= $line['name']?>", "<?= $line['type']?>", "<?= $line['min']?>", "<?= $line['max']?>", "<?= $line['default']?>" ,"<?= $line['public']?>");
                 <?php endforeach; ?>
             });
         </script>
