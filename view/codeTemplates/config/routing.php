@@ -12,7 +12,7 @@ use Prim\Router;
 
 /** @var Router \$this */
 
-\$this->addGroup('/{$file->entityNameLC}s', function(Router \$r) {
+\$this->addGroup('/{$file->tableName}', function(Router \$r) {
     \$r->both('/[{page:\d+}]', '{$file->packName}\Table', 'index');
 
     \$r->both('/create', '{$file->packName}\Form', 'add');

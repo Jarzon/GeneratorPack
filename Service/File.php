@@ -11,6 +11,7 @@ class File
     public string $packDir;
     public string $packName;
     public string $entityName;
+    public string $tableName;
     public string $entityNameLC;
     public string $targetPackNamespace;
     public bool $createCRUD;
@@ -39,12 +40,11 @@ class File
 
     public function setEntity(string $entityName, bool $crud): void
     {
-        if(str_contains($entityName, 'Pack')) {
-            $entityName = str_replace('Pack', '', $entityName);
-        }
+        $this->tableName = $entityName;
+        $entityName = str_ends_with($entityName, 's')? substr($entityName, 0, -1) : $entityName;
 
-        $this->entityName = ucfirst($entityName);
         $this->entityNameLC = lcfirst($entityName);
+        $this->entityName = ucfirst($entityName);
 
         $this->packDir = $this->options['root'] . 'src/' . $this->packName;
         $this->createCRUD = $crud;
@@ -258,7 +258,7 @@ class File
 
         $name = implode('_', $migrationName);
 
-        $this->createFile($phinxDir . date('YmdHis') . "_{$this->entityNameLC}_$name.php", $file);
+        $this->createFile($phinxDir . date('YmdHis') . "_{$this->tableName}_$name.php", $file);
     }
 
     public function generateForm(bool $isNew = false): string|null

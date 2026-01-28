@@ -30,7 +30,7 @@ class Actions extends AbstractController
 
         \$this->message('ok', '{$file->entityNameLC} deleted');
 
-        \$this->redirect('/{$file->entityNameLC}s/');
+        \$this->redirect('/{$file->tableName}/');
     }
 }
 EOT;

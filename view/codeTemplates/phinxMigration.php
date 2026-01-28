@@ -36,7 +36,7 @@ class {$className} extends AbstractMigration
 {
     public function change(): void
     {
-        \$table = \$this->table('{$file->entityNameLC}');
+        \$table = \$this->table('{$file->tableName}');
         \$table
 
 EOT;

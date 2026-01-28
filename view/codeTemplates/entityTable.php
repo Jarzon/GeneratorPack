@@ -28,7 +28,7 @@ foreach($file->data as $row):
     {
         parent::__construct($alias, <?=$file->entityName ?>::class);
 
-        $this->table('<?=$file->entityNameLC ?>');
+        $this->table('<?=$file->tableName ?>');
 
 <?php foreach($file->data as $row):
     if($row['status'] === '-1') continue;

@@ -22,7 +22,7 @@ if($isNew) {
 
 \$this->start('default'); ?>
     <div class="box">
-        <form action="/{$file->entityNameLC}s/<?=(\$new)? 'create': "edit/\${$file->entityNameLC}->id"?>" method="POST">
+        <form action="/{$file->tableName}/<?=(\$new)? 'create': "edit/\${$file->entityNameLC}->id"?>" method="POST">
             
 EOT;
 }

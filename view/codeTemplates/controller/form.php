@@ -42,7 +42,7 @@ class Form extends AbstractController
 
                 \$this->message('ok', '{$file->entityNameLC} saved');
 
-                \$this->redirect('/{$file->entityNameLC}s/');
+                \$this->redirect('/{$file->tableName}/');
             }
         }
 

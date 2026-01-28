@@ -47,7 +47,7 @@ foreach ($file->data as $row) {
 
 echo <<<EOT
             ->th('actions')->colspan(1)
-            ->addAction('modify', '/{$file->entityNameLC}s/edit/');
+            ->addAction('modify', '/{$file->tableName}/edit/');
 
         \${$file->entityNameLC}s = \$this->{$file->entityName}Model->get{$file->entityName}s(\$paginator->getFirstPageElement(), \$paginator->getElementsPerPages(), \$table->getOrderColumn(), \$table->getOrder(), \$table->getOrderColumns());
 
