@@ -131,6 +131,7 @@ class File
         $this->savePackStruct();
     }
 
+    /** @return array<mixed> */
     public function updateEntity(): array
     {
         $this->generateTableEntity(true);
@@ -230,12 +231,34 @@ class File
         $phinxDir = $this->packDir . '/migrations/';
         $this->createDir($phinxDir);
 
+        $migrationName = ['init'];
+
+        if(!$isNew) {
+            $migrationName = [];
+            foreach ($this->data as $v) {
+                if($v['status'] === '0') continue;
+                if($v['status'] === '-1') {
+                    $migrationName[] = 'delete';
+                }
+                if($v['status'] === '1') {
+                    $migrationName[] = 'add';
+                }
+                if($v['status'] === '2') {
+                    $migrationName[] = 'change';
+                }
+                $migrationName[] = $v['name'];
+            }
+        }
+
         $file = $this->view->fetch('codeTemplates/phinxMigration', 'GeneratorPack', [
             'file' => $this,
             'isNew' => $isNew,
+            'migrationName' => $migrationName
         ]);
 
-        $this->createFile($phinxDir . date('YmdHis') . "_{$this->entityNameLC}_".($isNew? 'init' : 'update').".php", $file);
+        $name = implode('_', $migrationName);
+
+        $this->createFile($phinxDir . date('YmdHis') . "_{$this->entityNameLC}_$name.php", $file);
     }
 
     public function generateForm(bool $isNew = false): string|null

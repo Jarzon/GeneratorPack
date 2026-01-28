@@ -3,7 +3,8 @@ declare(strict_types=1);
 /**
  * @var \Prim\View $this
  * @var \GeneratorPack\Service\File $file
-  * @var bool $isNew
+ * @var bool $isNew
+ * @var array $migrationName
  */
 
 $columnsType = [
@@ -25,7 +26,7 @@ $columnsType = [
     'password' => 'string',
 ];
 
-$className = $file->entityName. ($isNew? 'Init' : 'Update');
+$className = $file->entityName. implode('', array_map(fn($s) => ucfirst($s), $migrationName));
 
 echo <<<EOT
 <?php declare(strict_types=1);
