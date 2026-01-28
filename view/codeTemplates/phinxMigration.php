@@ -72,14 +72,20 @@ foreach ($file->data as $row) {
     ) {
         echo ', [';
 
-        if(!empty($row['max'])) {
+        if($row['type'] === 'currency' && !empty($row['min']) && !empty($row['max'])) {
+            $integerNumber = (int)$row['min'];
+            $decimalNumber = (int)$row['max'];
+            $scale = $integerNumber + $decimalNumber;
+            echo "'scale' => $scale, 'precision' => $decimalNumber, ";
+        }
+        else if(!empty($row['max'])) {
             echo "'limit' => {$row['max']}, ";
         }
         if($row['type'] === 'text') {
             echo "'null' => false, ";
         }
         if(isset($row['default']) && $row['default'] !== '') {
-            echo "'default' => '{$row['default']}'";
+            echo "'default' => '{$row['default']}', ";
         }
 
         echo "]";
