@@ -56,7 +56,7 @@ $this->start('default'); ?>
             <?php endif; ?>
 
             <h3><?=$entityName ?></h3>
-            <table class="table responsiveTable">
+            <table style="width: 100%;">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -99,7 +99,7 @@ $this->start('default'); ?>
         <script>
             window.addEventListener('load', function () {
                 <?php foreach($lines as $line): ?>
-                addLine("<?= $line['name']?>", "<?= $line['type']?>", "<?= $line['min']?>", "<?= $line['max']?>", "<?= $line['default']?>" ,"<?= $line['public']?>");
+                addLine("<?= $line['name']?>", "<?= $line['type']?>", "<?= $line['min']?>", "<?= $line['max']?>", "<?= str_replace('"', '\"', $line['default'])?>" ,"<?= $line['public']?>");
                 <?php endforeach; ?>
             });
         </script>
