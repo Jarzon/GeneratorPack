@@ -38,10 +38,10 @@ class File
         $this->targetPackNamespace = "{$this->options['project_name']}\\{$packName}";
     }
 
-    public function setEntity(string $entityName, bool $crud): void
+    public function setEntity(string $tableName, bool $crud): void
     {
-        $this->tableName = $entityName;
-        $entityName = str_ends_with($entityName, 's')? substr($entityName, 0, -1) : $entityName;
+        $this->tableName = $tableName;
+        $entityName = str_ends_with($tableName, 's')? substr($tableName, 0, -1) : $tableName;
 
         $this->entityNameLC = lcfirst($entityName);
         $this->entityName = ucfirst($entityName);
@@ -77,6 +77,7 @@ class File
     {
         $data = $this->getPackStruct($this->packName) ?: [];
         $data[$this->entityName] = [
+            'tableName' => $this->tableName,
             'crud' => $this->createCRUD,
             'lines' => $this->getData()
         ];
@@ -233,20 +234,31 @@ class File
 
         $migrationName = ['init'];
 
+        $data = $this->data;
+
+        usort($data, function ($a, $b) {
+            return $a['status'] <=> $b['status'];
+        });
+
         if(!$isNew) {
+            $lastCat = '';
             $migrationName = [];
-            foreach ($this->data as $v) {
+            foreach ($data as $v) {
                 if($v['status'] === '0') continue;
-                if($v['status'] === '-1') {
-                    $migrationName[] = 'delete';
+                if($v['status'] !== $lastCat) {
+                    if($v['status'] === '-1') {
+                        $migrationName[] = 'delete';
+                    }
+                    if($v['status'] === '1') {
+                        $migrationName[] = 'add';
+                    }
+                    if($v['status'] === '2') {
+                        $migrationName[] = 'change';
+                    }
                 }
-                if($v['status'] === '1') {
-                    $migrationName[] = 'add';
-                }
-                if($v['status'] === '2') {
-                    $migrationName[] = 'change';
-                }
+
                 $migrationName[] = $v['name'];
+                $lastCat = $v['status'];
             }
         }
 

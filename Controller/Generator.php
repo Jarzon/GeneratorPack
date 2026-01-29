@@ -71,7 +71,7 @@ class Generator extends AbstractController
 
         $data = $entityName !== null? $this->file->getEntityStruct($packName, $entityName) : [];
 
-        if($entityName !== null) $this->file->setEntity($entityName, $data['crud'] ?? true);
+        if($entityName !== null) $this->file->setEntity($data['tableName'] ?? $entityName, $data['crud'] ?? true);
 
         if($this->entityForm->submitted()) {
             try {
