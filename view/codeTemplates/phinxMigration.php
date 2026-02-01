@@ -94,6 +94,6 @@ foreach ($file->data as $row) {
     if($row['status'] !== '0') echo ")\n";
 
 } ?>
-            -><?=$isNew? 'create' : 'change' ?>();
+            -><?=$isNew? 'create' : 'update' ?>();
     }
 }
