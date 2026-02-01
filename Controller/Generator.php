@@ -82,7 +82,16 @@ class Generator extends AbstractController
                 $this->message('alert', $e->getMessage());
             }
 
-            if(!empty($dataValues)) {
+            $isChange = false;
+
+            foreach ($dataValues as $row) {
+                if($row['status'] !== '0') $isChange = true;
+            }
+
+            if(!$isChange) {
+                $this->message('info', 'Nothing to save');
+            }
+            else if(!empty($dataValues)) {
                 if($entityName === null) $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
                 $this->file->setData($dataValues);
 
