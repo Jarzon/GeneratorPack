@@ -71,6 +71,11 @@ class Generator extends AbstractController
 
         $data = $entityName !== null? $this->file->getEntityStruct($packName, $entityName) : [];
 
+        if($data === false) {
+            $this->message('error', "The entity <b>$entityName</b> doesnt exist");
+            $this->redirect("/admin/generator/modify/$packName");
+        }
+
         if($entityName !== null) $this->file->setEntity($data['tableName'] ?? $entityName, $data['crud'] ?? true);
 
         if($this->entityForm->submitted()) {
