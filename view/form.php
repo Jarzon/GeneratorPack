@@ -47,7 +47,7 @@ $this->start('default'); ?>
             </table>
         <?php endif; ?>
 
-        <?=$entityForm('form')->row?>
+        <?=$dataForm('form')->row?>
             <?php if($entityName === null): ?>
                 <h3>New entity</h3>
                 <div class="listForm"><?=$entityForm('entity_name')->label('Entity name')->row?></div>
@@ -75,9 +75,9 @@ $this->start('default'); ?>
 
             <hr class="separator">
 
-        <?=$entityForm('save')->value('Save')->row?>
+        <?=$dataForm('save')->value('Save')->row?>
 
-        <?=$entityForm('/form')->row?>
+        <?=$dataForm('/form')->row?>
     </div>
 <?php $this->end() ?>
 

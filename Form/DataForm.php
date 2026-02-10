@@ -38,6 +38,7 @@ class DataForm extends FormAbstract
 
             ->hidden('status[]')
                 ->value(0)
-            ;
+
+            ->submit();
     }
 }

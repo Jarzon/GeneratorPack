@@ -23,8 +23,7 @@ class EntityForm extends FormAbstract
             ->checkbox('crud')
                 ->value(true)
             ->checkbox('disableCodeGeneration')
-                ->value(true)
-            ->submit();
+                ->value(true);
 
         $this->updateValues(['crud' => true]);
     }

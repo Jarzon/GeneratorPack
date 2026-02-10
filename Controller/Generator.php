@@ -78,9 +78,9 @@ class Generator extends AbstractController
 
         if($entityName !== null) $this->file->setEntity($data['tableName'] ?? $entityName, $data['crud'] ?? true);
 
-        if($this->entityForm->submitted()) {
+        if($this->dataForm->submitted()) {
             try {
-                $entityValues = $this->entityForm->validation();
+                if($entityName === null) $entityValues = $this->entityForm->validation();
                 $dataValues = $this->dataForm->validation();
 
                 $isChange = false;
