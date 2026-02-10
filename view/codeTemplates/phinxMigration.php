@@ -82,9 +82,13 @@ foreach ($file->data as $row) {
             echo "'limit' => {$row['max']}, ";
         }
         if($row['type'] === 'text') {
-            echo "'null' => false, ";
+            if($row['default'] === 'null') {
+                echo "'null' => true, ";
+            } else {
+                echo "'null' => false, ";
+            }
         }
-        if(isset($row['default']) && $row['default'] !== '') {
+        if(isset($row['default']) && $row['default'] !== '' && $row['default'] !== 'null') {
             echo "'default' => '{$row['default']}', ";
         }
 
