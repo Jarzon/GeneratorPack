@@ -82,32 +82,32 @@ class Generator extends AbstractController
             try {
                 $entityValues = $this->entityForm->validation();
                 $dataValues = $this->dataForm->validation();
+
+                $isChange = false;
+
+                foreach ($dataValues as $row) {
+                    if($row['status'] !== '0') $isChange = true;
+                }
+
+                if(!$isChange) {
+                    $this->message('info', 'Nothing to save');
+                }
+                else if(!empty($dataValues)) {
+                    if($entityName === null) $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
+                    $this->file->setData($dataValues);
+
+                    if($entityName === null) {
+                        $this->file->createEntity($entityValues['disableCodeGeneration'] ?? false);
+                        $this->message('ok', 'The entity was successful created');
+                        $this->redirect("/admin/generator/modify/$packName/{$entityValues['entity_name']}");
+                    } else {
+                        $newCode = $this->file->updateEntity();
+                        $this->message('ok', 'The entity was successful updated');
+                    }
+                }
             }
             catch(ValidationException $e) {
                 $this->message('alert', $e->getMessage());
-            }
-
-            $isChange = false;
-
-            foreach ($dataValues as $row) {
-                if($row['status'] !== '0') $isChange = true;
-            }
-
-            if(!$isChange) {
-                $this->message('info', 'Nothing to save');
-            }
-            else if(!empty($dataValues)) {
-                if($entityName === null) $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
-                $this->file->setData($dataValues);
-
-                if($entityName === null) {
-                    $this->file->createEntity($entityValues['disableCodeGeneration'] ?? false);
-                    $this->message('ok', 'The entity was successful created');
-                    $this->redirect("/admin/generator/modify/$packName/{$entityValues['entity_name']}");
-                } else {
-                    $newCode = $this->file->updateEntity();
-                    $this->message('ok', 'The entity was successful updated');
-                }
             }
         }
 

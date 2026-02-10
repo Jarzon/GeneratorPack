@@ -19,6 +19,7 @@ class EntityForm extends FormAbstract
             ->text('entity_name')
                 ->autocomplete('off')
                 ->attributes(['minLenght' => '3'])
+                ->required()
             ->checkbox('crud')
                 ->value(true)
             ->checkbox('disableCodeGeneration')
