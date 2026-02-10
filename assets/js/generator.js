@@ -9,7 +9,7 @@ function generateRow(status = null, name = null, type = null, min = null, max = 
     let statusInput = baseForm.querySelector('.status');
 
     baseForm.addEventListener('change', function () {
-        statusInput.value = '2';
+        if(statusInput.value !== '1') statusInput.value = '2';
     });
 
     typeSelect.addEventListener('change', function () {
