@@ -11,13 +11,14 @@ echo <<<EOT
  * @var \Prim\View \$this
  * @var callable \$_
  * @var callable \$e
+ * @var {$file->options["project_name"]}\UserPack\Service\User \$user 
  */
 
 \$title = \$_('{$file->entityNameLC}s');
 
 \$this->start('default');
 ?>
-    <a class="buttonLink add" href="/{$file->entityNameLC}s/create"><?=\$_("add new {$file->entityNameLC}")?></a>
+    <a class="buttonLink add" href="/{$file->entityNameLC}s/create"><?=\$_("create %s", "{$file->entityNameLC}")?></a>
 
     <?php \$this->insert('table', 'TablePack', ['empty' => "you don't have any {$file->entityNameLC}s", 'type' => '{$file->tableName}']) ?>
 

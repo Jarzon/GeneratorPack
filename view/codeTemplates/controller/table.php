@@ -31,7 +31,7 @@ class Table extends AbstractController
     {
         \$paginator = new Pagination(\$page, \$this->{$file->entityName}Model->getNumberOf{$file->entityName}s(), 13, 3);
 
-        \$t = new {$file->entityName}();
+        \$t = new {$file->entityName}Table();
 
         \$table = new TableService('table');
 

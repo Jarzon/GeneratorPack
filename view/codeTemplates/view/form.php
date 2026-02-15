@@ -37,7 +37,7 @@ foreach ($file->data as $row) {
 if($isNew) {
     echo <<<EOT
 
-            <?=\$form('submit')->value(\$_('save {$file->entityNameLC}'))->row?>
+            <?=\$form('save')->value(\$_('save %s', '{$file->entityNameLC}'))->row?>
         </form>
     </div>
 <?php \$this->end() ?>
