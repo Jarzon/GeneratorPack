@@ -26,7 +26,7 @@ $columnsType = [
     'password' => 'string',
 ];
 
-$className = $file->entityName. implode('', array_map(fn($s) => ucfirst($s), $migrationName));
+$className = ucfirst($file->tableName). implode('', array_map(fn($s) => ucfirst($s), $migrationName));
 
 echo <<<EOT
 <?php declare(strict_types=1);
