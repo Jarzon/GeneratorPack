@@ -103,6 +103,7 @@ class {$file->entityName}Model extends Model
         \$query = QB::select(\$m)
             ->columns($selectColumns)
             ->where(\$m->user_id, '=', \$this->user->id)
+            ->whereRaw(\$m->status, '>=', 0)
             ->limit(\$mtart, \$numberOfElements);
 
         if(isset(\$columns[\$orderField])) {
