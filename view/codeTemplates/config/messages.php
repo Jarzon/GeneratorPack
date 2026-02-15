@@ -8,6 +8,8 @@ declare(strict_types=1);
 echo <<<EOT
 {
   "$file->entityName": ["$file->entityName in english", "$file->entityName en français"],
+  "{$file->entityName}s": ["{$file->entityName}s in english", "{$file->entityName}s en français"],
+  "a $file->entityName": ["a $file->entityName", "un/une $file->entityName en français"],
   "the $file->entityName": ["the $file->entityName in english", "le/la $file->entityName en français"],
   "this $file->entityName": ["this $file->entityName in english", "cet/cette $file->entityName en français"],
 }
