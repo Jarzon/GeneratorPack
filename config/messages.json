@@ -1,4 +1,7 @@
 {
   "save %s": ["Save %s", "Sauvegarder %s"],
-  "create %s": ["Create %s", "Créer %s"]
+  "create %s": ["Create %s", "Créer %s"],
+  "%s saved": ["%s saved", "%s sauvegardé"],
+  "%s updated": ["%s updated", "%s mise à jour"],
+  "%s deleted": ["%s deleted", "%s supprimé"]
 }
