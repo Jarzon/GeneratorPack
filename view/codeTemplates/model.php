@@ -96,7 +96,7 @@ class {$file->entityName}Model extends Model
      * @param array<mixed> \$columns
      * @return array<mixed>|false
      */
-    public function get{$file->entityName}s(int \$mtart, int \$numberOfElements, string \$orderField, string \$order, array \$columns): array|false
+    public function get{$file->entityName}s(int \$mtart, int \$numberOfElements, string \$orderField, string \$order, array \$columns, bool \$showDeleted = false, string \$search = ''): array|false
     {
         \$m = new {$file->getEntityTableName()}();
 
@@ -104,6 +104,7 @@ class {$file->entityName}Model extends Model
             ->columns($selectColumns)
             ->where(\$m->user_id, '=', \$this->user->id)
             ->whereRaw(\$m->status, '>=', 0)
+            ->whereRaw(\$m->status, \$showDeleted? '=' : '>=', \$showDeleted? -1 : 0)
             ->limit(\$mtart, \$numberOfElements);
 
         if(isset(\$columns[\$orderField])) {
@@ -111,6 +112,21 @@ class {$file->entityName}Model extends Model
         } else {
             \$query
                 ->orderBy(\$m->status);
+        }
+        
+        if(\$search !== '') {
+            if(is_numeric(\$search)) {
+                \$query->where(function (Select \$q) use(\$i, \$search) {
+                    \$q->where(\$i->id, '=', (int)\$search);
+                });
+            }
+            else {
+//                \$query->where(function (Select \$q) use(\$c, \$search) {
+//                    \$q
+//                        ->where(\$c->name, 'like', "%\$search%")
+//                        ->or(\$c->name_fac, 'like', "%\$search%");
+//                });
+            }
         }
 
         return \$query->fetchAll();

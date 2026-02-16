@@ -12,6 +12,7 @@ namespace {$file->targetPackNamespace}\Controller;
 
 use Prim\{View, AbstractController};
 use PaginationPack\Service\Pagination;
+use {$file->options['project_name']}\UserPack\Service\User;
 
 use {$file->options['project_name']}\TablePack\Service\Table as TableService;
 use {$file->targetPackNamespace}\Entity\\{$file->entityName};
@@ -22,12 +23,36 @@ class Table extends AbstractController
     public function __construct(
         View \$view,
         array \$options,
-        public {$file->entityName}Model \${$file->entityName}Model
+        public {$file->entityName}Model \${$file->entityName}Model,
+        public User \$user,
     ) {
         parent::__construct(\$view, \$options);
     }
+    
+    public function showDeleted(int \$page = 1): void
+    {
+        \$this->index(\$page, true);
+    }
 
-    public function index(int \$page = 1): void
+    public function searchDeletedResults(int \$page = 1): void
+    {
+        if(isset(\$_POST['search']) && \$_POST['search'] !== '') {
+            \$_SESSION['lastSearch'] = trim(str_replace('/', '-', \$_POST['search']));
+        }
+
+        \$this->index(\$page, true, \$_SESSION['lastSearch'] ?? '');
+    }
+
+    public function searchResults(int \$page = 1): void
+    {
+        if(isset(\$_POST['search']) && \$_POST['search'] !== '') {
+            \$_SESSION['lastSearch'] = trim(str_replace('/', '-', \$_POST['search']));
+        }
+
+        \$this->index(\$page, false, \$_SESSION['lastSearch'] ?? '');
+    }
+
+    public function index(int \$page = 1, bool \$showDeleted = false, string \$search = ''): void
     {
         \$paginator = new Pagination(\$page, \$this->{$file->entityName}Model->getNumberOf{$file->entityName}s(), 13, 3);
 
@@ -46,16 +71,23 @@ foreach ($file->data as $row) {
 }
 
 echo <<<EOT
-            ->th('actions')->colspan(1)
-            ->addAction('modify', '/{$file->tableName}/edit/');
+            ->th('actions');
+            
+            if(\$showDeleted) {
+                \$table->addAction('restore', '/{$file->tableName}/restore/');
+            } else {
+                \$table->addAction('modify', '/{$file->tableName}/edit/');
+            }
 
-        \${$file->entityNameLC}s = \$this->{$file->entityName}Model->get{$file->entityName}s(\$paginator->getFirstPageElement(), \$paginator->getElementsPerPages(), \$table->getOrderColumn(), \$table->getOrder(), \$table->getOrderColumns());
+        \${$file->entityNameLC}s = \$this->{$file->entityName}Model->get{$file->entityName}s(\$paginator->getFirstPageElement(), \$paginator->getElementsPerPages(), \$table->getOrderColumn(), \$table->getOrder(), \$table->getOrderColumns(), \$showDeleted, \$search);
 
         \$table->rows(\${$file->entityNameLC}s);
 
         \$this->render('index', '{$file->entityName}Pack', [
             'paginator' => \$paginator,
-            'table' => \$table
+            'table' => \$table,
+            'showDeleted' => \$showDeleted,
+            'searchTerm' => \$search,
         ]);
     }
 }

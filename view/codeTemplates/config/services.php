@@ -14,10 +14,12 @@ use {$file->targetPackNamespace}\Controller\\{Table, Form, Actions};
 
 return [
     Table::class => function(Container \$dic) {
-        \$dic->service('UserPack\User')->verification();
+        \$user = \$dic->service('UserPack\User');
+        \$user->->verification();
 
         return [
             \$dic->model('{$file->packName}\\{$file->entityName}Model'),
+            \$user,
         ];
     },
     Form::class => function(Container \$dic) {
