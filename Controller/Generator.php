@@ -88,7 +88,7 @@ class Generator extends AbstractController
                 if($recreate === 1) {
                     foreach ($dataValues as $i => $row) {
 
-                        if($row['status'] !== '-1') $dataValues[$i]['status'] = 0;
+                        if($row['status'] !== '-1') $dataValues[$i]['status'] = '1';
                     }
                     $isChange = true;
                 } else {

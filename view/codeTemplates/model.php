@@ -113,7 +113,7 @@ class {$file->entityName}Model extends Model
             \$query
                 ->orderBy(\$m->status);
         }
-        
+
         if(\$search !== '') {
             if(is_numeric(\$search)) {
                 \$query->where(function (Select \$q) use(\$i, \$search) {

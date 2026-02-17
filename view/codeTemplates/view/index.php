@@ -24,5 +24,5 @@ echo <<<EOT
 
     <?php \$this->insert('sections/pagination', 'BasePack') ?>
 <?php \$this->end() ?>
-  
+
 EOT;
