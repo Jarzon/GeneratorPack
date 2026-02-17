@@ -55,7 +55,7 @@ class Table extends AbstractController
     public function index(int \$page = 1, bool \$showDeleted = false, string \$search = ''): void
     {
         \$paginator = new Pagination(\$page, \$this->{$file->entityName}Model->getNumberOf{$file->entityName}s(), 13, 3);
-
+    
         \$t = new {$file->entityName}Table();
 
         \$table = new TableService('table');
