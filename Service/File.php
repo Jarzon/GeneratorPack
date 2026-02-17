@@ -79,7 +79,7 @@ class File
         $data[$this->entityName] = [
             'tableName' => $this->tableName,
             'crud' => $this->createCRUD,
-            'lines' => $this->getData()
+            'lines' => $this->getData(),
         ];
         file_put_contents("{$this->packDir}/config/packStruct.php", serialize($data));
     }
@@ -104,6 +104,38 @@ class File
     public function createPack(): void
     {
         $this->createDir($this->packDir);
+    }
+
+    public function removeCRUD(): void
+    {
+        $this->removeFolder($this->packDir . '/Controller/');
+        $this->removeFolder($this->packDir . '/Entity/');
+        $this->removeFolder($this->packDir . '/Form/');
+        $this->removeFolder($this->packDir . '/migrations/');
+        $this->removeFolder($this->packDir . '/Model/');
+        $this->removeFolder($this->packDir . '/view/');
+        $configDir = $this->packDir . '/config';
+        $this->removeFile($configDir . '/routing.php');
+        $this->removeFile($configDir . '/services.php');
+        $this->removeFile($configDir . '/services.php');
+    }
+
+    public function removeFolder(string $path): void
+    {
+        if(!is_dir($path)) return;
+        $files = scandir($path);
+
+        foreach ($files as $file) {
+            if($file === '.' || $file === '..') continue;
+            $this->removeFile($path.$file);
+        }
+
+        rmdir($path);
+    }
+
+    public function removeFile(string $path): void
+    {
+        if(file_exists($path)) unlink($path);
     }
 
     public function createEntity(bool $disableCodeGeneration): void
@@ -141,7 +173,7 @@ class File
         $array = [
             'entity' => $this->generateEntity(),
             'form class' => $this->generateForm(),
-            'form view' => $this->createCRUD? $this->generateFormView() : ''
+            'form view' => $this->createCRUD? $this->generateFormView() : '',
         ];
 
         $this->savePackStruct();
@@ -190,11 +222,14 @@ class File
 
     public function generateTranslationMessages(bool $overwrite = false): void
     {
+        $path = "$this->packDir/config/messages.json";
+        if(file_exists($path)) return;
+
         $file = $this->view->fetch('codeTemplates/config/messages', 'GeneratorPack', [
             'file' => $this,
         ]);
 
-        $this->createFile("$this->packDir/config/messages.json", $file, $overwrite);
+        $this->createFile($path, $file, $overwrite);
     }
 
     public function generateTableEntity(bool $overwrite = false): void
@@ -265,7 +300,7 @@ class File
         $file = $this->view->fetch('codeTemplates/phinxMigration', 'GeneratorPack', [
             'file' => $this,
             'isNew' => $isNew,
-            'migrationName' => $migrationName
+            'migrationName' => $migrationName,
         ]);
 
         $name = implode('_', $migrationName);
@@ -450,7 +485,7 @@ class File
     {
         $file = $this->view->fetch('codeTemplates/view/form', 'GeneratorPack', [
             'file' => $this,
-            'isNew' => $isNew
+            'isNew' => $isNew,
         ]);
         return $file;
     }

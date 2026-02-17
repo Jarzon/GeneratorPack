@@ -36,11 +36,12 @@ $this->start('default'); ?>
             <table class="table responsiveTable">
                 <tr>
                     <th>Entity</th>
-                    <th>Actions</th>
+                    <th colspan="2">Actions</th>
                 </tr>
                 <?php foreach($entities as $entity): ?>
                     <tr>
                         <td><?=$entity ?></td>
+                        <td><a href="/admin/generator/modify/<?=$packName ?>/<?=$entity ?>/1">Recreate</a></td>
                         <td><a href="/admin/generator/modify/<?=$packName ?>/<?=$entity ?>">Modify</a></td>
                     </tr>
                 <?php endforeach; ?>

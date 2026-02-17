@@ -65,7 +65,7 @@ class Generator extends AbstractController
         ]);
     }
 
-    public function modify(string $packName, string|null $entityName = null): void
+    public function modify(string $packName, string|null $entityName = null, int $recreate = 0): void
     {
         $this->file->setPack($packName);
 
@@ -85,8 +85,16 @@ class Generator extends AbstractController
 
                 $isChange = false;
 
-                foreach ($dataValues as $row) {
-                    if($row['status'] !== '0') $isChange = true;
+                if($recreate === 1) {
+                    foreach ($dataValues as $i => $row) {
+
+                        if($row['status'] !== '-1') $dataValues[$i]['status'] = 0;
+                    }
+                    $isChange = true;
+                } else {
+                    foreach ($dataValues as $row) {
+                        if($row['status'] !== '0') $isChange = true;
+                    }
                 }
 
                 if(!$isChange) {
@@ -96,7 +104,8 @@ class Generator extends AbstractController
                     if($entityName === null) $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
                     $this->file->setData($dataValues);
 
-                    if($entityName === null) {
+                    if($entityName === null || $recreate === 1) {
+                        if($recreate === 1) $this->file->removeCRUD();
                         $this->file->createEntity($entityValues['disableCodeGeneration'] ?? false);
                         $this->message('ok', 'The entity was successful created');
                         $this->redirect("/admin/generator/modify/$packName/{$this->file->entityName}");
