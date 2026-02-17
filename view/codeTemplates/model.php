@@ -12,7 +12,8 @@ $select = [];
 foreach ($file->data as $row) {
     if(!$row['public']) continue;
 
-    $select[] = "\$m->{$row['name']}";
+    $select[] = "\$m->{$row['name']}" . ($row['type'] === 'text' && $row['default'] === 'null'? "->ifIsNull(\"''\")->alias('{$row['name']}')" : "");
+
 }
 
 $selectColumns = implode(', ', $select);

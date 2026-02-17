@@ -37,7 +37,7 @@ class Form extends AbstractController
                 \$this->addVar('error', \$e->getMessage());
             }
 
-            if(isset(\$params)) {
+            if(!empty(\$params)) {
                 \$this->{$file->entityName}Model->add{$file->entityName}(\$params);
 
                 \$this->message('ok', '%s saved', '{$file->entityName}');
@@ -69,7 +69,7 @@ class Form extends AbstractController
                 \$this->message('error', \$e->getMessage());
             }
 
-            if (isset(\$params)) {
+            if (!empty(\$params)) {
                 \$this->{$file->entityName}Model->update{$file->entityName}(\$params, \${$file->entityNameLC}_id);
             }
         }
