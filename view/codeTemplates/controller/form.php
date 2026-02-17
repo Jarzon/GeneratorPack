@@ -40,7 +40,7 @@ class Form extends AbstractController
             if(isset(\$params)) {
                 \$this->{$file->entityName}Model->add{$file->entityName}(\$params);
 
-                \$this->message('ok', '%s saved', '{$file->entityNameLC}');
+                \$this->message('ok', '%s saved', '{$file->entityName}');
 
                 \$this->redirect('/{$file->tableName}/');
             }
@@ -64,7 +64,7 @@ class Form extends AbstractController
             try {
                 \$params = \$this->{$file->entityName}Form->validation();
 
-                \$this->message('ok', '%s updated', '{$file->entityNameLC}');
+                \$this->message('ok', '%s updated', '{$file->entityName}');
             } catch (ValidationException \$e) {
                 \$this->message('error', \$e->getMessage());
             }

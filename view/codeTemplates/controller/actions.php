@@ -28,7 +28,7 @@ class Actions extends AbstractController
     {
         \$this->{$file->entityName}Model->delete{$file->entityName}(\${$file->entityNameLC}Id);
         
-        \$this->message('ok', '%s deleted', '{$file->entityNameLC}');
+        \$this->message('ok', '%s deleted', '{$file->entityName}');
 
         \$this->redirect('/{$file->tableName}/');
     }
