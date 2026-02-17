@@ -15,7 +15,7 @@ use PaginationPack\Service\Pagination;
 use {$file->options['project_name']}\UserPack\Service\User;
 
 use {$file->options['project_name']}\TablePack\Service\Table as TableService;
-use {$file->targetPackNamespace}\Entity\\{$file->entityName};
+use {$file->targetPackNamespace}\Entity\\{$file->entityName}Table;
 use {$file->targetPackNamespace}\Model\\{$file->entityName}Model;
 
 class Table extends AbstractController

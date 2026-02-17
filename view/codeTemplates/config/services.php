@@ -15,7 +15,7 @@ use {$file->targetPackNamespace}\Controller\\{Table, Form, Actions};
 return [
     Table::class => function(Container \$dic) {
         \$user = \$dic->service('UserPack\User');
-        \$user->->verification();
+        \$user->verification();
 
         return [
             \$dic->model('{$file->packName}\\{$file->entityName}Model'),
