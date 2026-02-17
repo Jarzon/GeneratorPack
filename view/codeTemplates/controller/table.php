@@ -67,7 +67,9 @@ EOT;
 foreach ($file->data as $row) {
     if($row['public'] === 'private') continue;
 
-    echo "            ->th('{$row['name']}')->order(\$t->{$row['name']})->escape()\n";
+    echo "            ->th('{$row['name']}')->order(\$t->{$row['name']})";
+    if($row['type'] === 'string' || $row['type'] === 'text') echo "->escape()";
+    echo "\n";
 }
 
 echo <<<EOT
