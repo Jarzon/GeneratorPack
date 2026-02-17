@@ -23,6 +23,7 @@ echo <<<EOT
 namespace {$file->targetPackNamespace}\Model;
 
 use Jarzon\QueryBuilder\Builder as QB;
+use Jarzon\QueryBuilder\Statements\Select;
 use {$file->targetPackNamespace}\Entity\\{$file->getEntityTableName()};
 use \PrimPack\Service\PDO;
 use Prim\Model;
@@ -116,15 +117,15 @@ class {$file->entityName}Model extends Model
 
         if(\$search !== '') {
             if(is_numeric(\$search)) {
-                \$query->where(function (Select \$q) use(\$i, \$search) {
-                    \$q->where(\$i->id, '=', (int)\$search);
+                \$query->where(function (Select \$q) use(\$m, \$search) {
+                    \$q->where(\$m->id, '=', (int)\$search);
                 });
             }
             else {
-//                \$query->where(function (Select \$q) use(\$c, \$search) {
+//                \$query->where(function (Select \$q) use(\$m, \$search) {
 //                    \$q
-//                        ->where(\$c->name, 'like', "%\$search%")
-//                        ->or(\$c->name_fac, 'like', "%\$search%");
+//                        ->where(\$m->name, 'like', "%\$search%")
+//                        ->or(\$m->name_fac, 'like', "%\$search%");
 //                });
             }
         }
