@@ -3,5 +3,6 @@
   "create %s": ["Create %s", "Créer %s"],
   "%s saved": ["%s saved", "%s sauvegardé"],
   "%s updated": ["%s updated", "%s mise à jour"],
-  "%s deleted": ["%s deleted", "%s supprimé"]
+  "%s deleted": ["%s deleted", "%s supprimé"],
+  "modify %s": ["Modify %s", "Modifier %s"]
 }

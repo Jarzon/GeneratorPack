@@ -19,6 +19,8 @@ if($isNew) {
  * @var {$file->targetPackNamespace}\Form\\{$file->entityName}Form \$form
  * @var bool \$new
  */
+ 
+\$title = \$_(\$new? 'create %s': "modify %s", \$new? 'a {$file->entityNameLC}': "the {$file->entityNameLC}");
 
 \$this->start('default'); ?>
     <div class="box">
