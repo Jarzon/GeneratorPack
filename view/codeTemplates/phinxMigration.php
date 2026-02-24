@@ -42,8 +42,12 @@ class {$className} extends AbstractMigration
 EOT;
 
 // TODO: more precise type based on limit(eg. biginteger)
+$previousColumnName = '';
 foreach ($file->data as $row) {
-    if($row['name'] === 'id') continue;
+    if($row['name'] === 'id') {
+        if($row['status'] === '0' || $row['status'] === '2') $previousColumnName = $row['name'];
+        continue;
+    }
 
     $isFullLine = false;
 
@@ -92,11 +96,15 @@ foreach ($file->data as $row) {
             echo "'default' => '{$row['default']}', ";
         }
 
+        if(!$isNew && $previousColumnName !== '') {
+            echo "'after' => '{$previousColumnName}', ";
+        }
+
         echo "]";
     }
 
     if($row['status'] !== '0') echo ")\n";
-
+    if($row['status'] === '0' || $row['status'] === '2') $previousColumnName = $row['name'];
 } ?>
             -><?=$isNew? 'create' : 'update' ?>();
     }
