@@ -57,9 +57,9 @@ $this->start('default'); ?>
             <?php endif; ?>
 
             <h3><?=$entityName ?></h3>
-            <table style="width: 100%;">
+            <table class="rows">
                 <thead>
-                    <tr>
+                    <tr style="">
                         <th>Name</th>
                         <th>Type</th>
                         <th>Min</th>
@@ -90,6 +90,17 @@ $this->start('default'); ?>
 
     input[type="text"], input[type="number"] {
         width: 100%;
+    }
+
+    .rows {
+        width: 100%;
+    }
+
+    .rows thead tr {
+        background: #000;
+        position: sticky;
+        top: 0;
+        z-index: 99;
     }
 </style>
 <?php $this->end() ?>
