@@ -21,7 +21,8 @@ $this->start('default'); ?>
     <?php endforeach; ?>
     <div class="box">
         <table>
-            <tr id="baseForm">
+            <tr id="baseForm" draggable="true">
+                <td class="drag"><img src="<?=$this->fileCache('/img/drag.svg') ?>" alt="="></td>
                 <td><?=$dataForm('name')->class('name')->row?></td>
                 <td><?=$dataForm('type')->class('type')->row?></td>
                 <td><?=$dataForm('min')->class('min')->row?></td>
@@ -60,6 +61,7 @@ $this->start('default'); ?>
             <table class="rows">
                 <thead>
                     <tr style="">
+                        <th></th>
                         <th>Name</th>
                         <th>Type</th>
                         <th>Min</th>
@@ -101,6 +103,10 @@ $this->start('default'); ?>
         position: sticky;
         top: 0;
         z-index: 99;
+    }
+
+    .drag {
+        cursor: grab;
     }
 </style>
 <?php $this->end() ?>

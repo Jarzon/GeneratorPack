@@ -1,14 +1,55 @@
 let lines = document.querySelector('#lines');
+let draggedRow;
+let draggedTextInputRow = false;
 
 function generateRow(status = null, name = null, type = null, min = null, max = null, defaultValue = null, isPublic = null) {
-    let baseForm = document.querySelector('#baseForm').cloneNode(true);
-    let typeSelect = baseForm.querySelector('.type');
-    let valueInput = baseForm.querySelector('.default');
-    let minInput = baseForm.querySelector('.min');
-    let maxInput = baseForm.querySelector('.max');
-    let statusInput = baseForm.querySelector('.status');
+    let baseRow = document.querySelector('#baseForm').cloneNode(true);
+    let dragCell = baseRow.querySelector('.drag');
+    let typeSelect = baseRow.querySelector('.type');
+    let valueInput = baseRow.querySelector('.default');
+    let minInput = baseRow.querySelector('.min');
+    let maxInput = baseRow.querySelector('.max');
+    let statusInput = baseRow.querySelector('.status');
+    let dragIcon = document.createElement('img');
+    dragIcon.src = '/img/verification.svg';
 
-    baseForm.addEventListener('change', function () {
+    baseRow.addEventListener('mousedown', function (e) {
+        console.log(e)
+        if(e.target && e.target.nodeName === 'INPUT') {
+            baseRow.draggable = false;
+            draggedTextInputRow = baseRow;
+        }
+    });
+
+    baseRow.addEventListener('dragstart', function (e) {
+        if(!baseRow.draggable) return;
+        if(!dragCell.matches(':hover')) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
+        draggedRow = baseRow;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setDragImage(dragIcon, -10, -10);
+        // Store the ID of the dragged row, for example
+        e.dataTransfer.setData('text/plain', e.target.id);
+    })
+
+    baseRow.addEventListener('dragover', function (e) {
+        if(draggedTextInputRow) {
+            draggedTextInputRow.draggable = true;
+            draggedTextInputRow = false;
+        } else {
+            e.preventDefault();
+            if (draggedRow && baseRow.tagName === 'TR' && baseRow.parentNode !== draggedRow) {
+                baseRow.parentNode.insertBefore(draggedRow, baseRow.rowIndex < draggedRow.rowIndex? baseRow : baseRow.nextSibling);
+            }
+        }
+    })
+
+    baseRow.effectAllowed = 'none';
+
+    baseRow.addEventListener('change', function () {
         if(statusInput.value !== '1') statusInput.value = '2';
     });
 
@@ -28,21 +69,10 @@ function generateRow(status = null, name = null, type = null, min = null, max = 
         }
     });
 
-    baseForm.id = '';
+    baseRow.id = '';
 
     let actions = document.createElement('td');
     actions.className = 'actions';
-    let moveup = document.createElement('div');
-    moveup.innerHTML = '<img alt="MoveUp" src="/img/arrow_up.svg">';
-    moveup.onclick = function() {
-        baseForm.parentElement.insertBefore(baseForm, baseForm.previousSibling);
-    };
-
-    let movedown = document.createElement('div');
-    movedown.innerHTML = '<img alt="MoveDown" src="/img/arrow_down.svg">';
-    movedown.onclick = function() {
-        baseForm.parentElement.insertBefore(baseForm.nextSibling, baseForm);
-    };
 
     let remove = document.createElement('div');
     remove.innerHTML = '<img alt="Remove" src="/img/delete.svg">';
@@ -57,14 +87,12 @@ function generateRow(status = null, name = null, type = null, min = null, max = 
         }
     };
 
-    actions.append(moveup);
-    actions.append(movedown);
     actions.append(remove);
 
-    baseForm.appendChild(actions);
+    baseRow.appendChild(actions);
 
     if(name !== null) {
-        baseForm.querySelector('.name').value = name;
+        baseRow.querySelector('.name').value = name;
     }
 
     if(type !== null) {
@@ -84,14 +112,14 @@ function generateRow(status = null, name = null, type = null, min = null, max = 
     }
 
     if(isPublic !== null) {
-        baseForm.querySelector('.public').value = isPublic;
+        baseRow.querySelector('.public').value = isPublic;
     }
 
     if(status !== null) {
         statusInput.value = status;
     }
 
-    return baseForm;
+    return baseRow;
 }
 
 function addLine(name = null, type = null, min = null, max = null, defaultValue = null, isPublic = null, status = null) {
