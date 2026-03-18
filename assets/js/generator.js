@@ -28,6 +28,7 @@ function generateRow(status = null, name = null, type = null, min = null, max = 
             e.stopPropagation();
             return;
         }
+        baseRow.style = 'background: #000;';
         draggedRow = baseRow;
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setDragImage(dragIcon, -10, -10);
@@ -47,7 +48,10 @@ function generateRow(status = null, name = null, type = null, min = null, max = 
         }
     })
 
-    baseRow.effectAllowed = 'none';
+    baseRow.addEventListener('dragend', function (e) {
+        if(!draggedRow) return;
+        draggedRow.style = '';
+    })
 
     baseRow.addEventListener('change', function () {
         if(statusInput.value !== '1') statusInput.value = '2';
