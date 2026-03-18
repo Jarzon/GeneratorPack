@@ -14,10 +14,14 @@ function generateRow(status = null, name = null, type = null, min = null, max = 
     dragIcon.src = '/img/verification.svg';
 
     baseRow.addEventListener('mousedown', function (e) {
-        console.log(e)
-        if(e.target && e.target.nodeName === 'INPUT') {
+        if(e.target) return;
+        if(e.target.nodeName === 'INPUT') {
             baseRow.draggable = false;
             draggedTextInputRow = baseRow;
+        }
+        else if(e.target.nodeName === 'IMG' || e.target.nodeName === 'TD') {
+            baseRow.draggable = true;
+            draggedTextInputRow = false;
         }
     });
 
@@ -138,7 +142,6 @@ function addNewLine() {
     let row = generateRow(1, null, null, null, null, null, 'public');
 
     if(lines.children.length < 1 || !isNew) {
-        console.log(lineCounter)
         lines.appendChild(row);
     } else {
         lines.children[lineCounter].after(row);
