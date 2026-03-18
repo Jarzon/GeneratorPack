@@ -292,7 +292,9 @@ class File
                     }
                 }
 
-                $migrationName[] = $v['name'];
+                $sub = explode('_', $v['name']);
+                $migrationName = array_merge($migrationName, $sub);
+
                 $lastCat = $v['status'];
             }
         }
