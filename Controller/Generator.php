@@ -76,7 +76,7 @@ class Generator extends AbstractController
             $this->redirect("/admin/generator/modify/$packName");
         }
 
-        if($entityName !== null) $this->file->setEntity($data['tableName'] ?? $entityName, $data['crud'] ?? true);
+        if($entityName !== null) $this->file->setEntity($entityName, $data['tableName'], $data['crud'] ?? true);
 
         if($this->dataForm->submitted()) {
             try {
@@ -101,7 +101,7 @@ class Generator extends AbstractController
                     $this->message('info', 'Nothing to save');
                 }
                 else if(!empty($dataValues)) {
-                    if($entityName === null) $this->file->setEntity($entityValues['entity_name'], $entityValues['crud']);
+                    if($entityName === null) $this->file->setEntity($entityValues['entity_name'], $entityValues['table_name'], $entityValues['crud']);
                     $this->file->setData($dataValues);
 
                     if($entityName === null || $recreate === 1) {

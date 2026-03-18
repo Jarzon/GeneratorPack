@@ -53,6 +53,7 @@ $this->start('default'); ?>
             <?php if($entityName === null): ?>
                 <h3>New entity</h3>
                 <div class="listForm"><?=$entityForm('entity_name')->label('Entity name')->row?></div>
+                <div class="listForm"><?=$entityForm('table_name')->label('Table name')->row?></div>
                 <div class="listForm"><?=$entityForm('crud')->label('Crud')->row?></div>
                 <div class="listForm"><?=$entityForm('disableCodeGeneration')->label('Disable code generation')->row?></div>
             <?php endif; ?>
@@ -103,6 +104,10 @@ $this->start('default'); ?>
         position: sticky;
         top: 0;
         z-index: 99;
+    }
+
+    .rows tr:hover {
+        background: black;
     }
 
     .drag {

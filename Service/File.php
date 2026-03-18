@@ -38,13 +38,11 @@ class File
         $this->targetPackNamespace = "{$this->options['project_name']}\\{$packName}";
     }
 
-    public function setEntity(string $tableName, bool $crud): void
+    public function setEntity(string $entityName, string $tableName, bool $crud): void
     {
-        $this->tableName = $tableName;
-        $entityName = str_ends_with($tableName, 's')? substr($tableName, 0, -1) : $tableName;
-
         $this->entityNameLC = lcfirst($entityName);
         $this->entityName = ucfirst($entityName);
+        $this->tableName = $tableName;
 
         $this->packDir = $this->options['root'] . 'src/' . $this->packName;
         $this->createCRUD = $crud;
