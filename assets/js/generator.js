@@ -137,11 +137,12 @@ let lineCounter = 0;
 function addNewLine() {
     let row = generateRow(1, null, null, null, null, null, 'public');
 
-    if(lines.children.length >= 1) {
+    if(lines.children.length < 1 || !isNew) {
+        console.log(lineCounter)
+        lines.appendChild(row);
+    } else {
         lines.children[lineCounter].after(row);
         lineCounter++;
-    } else {
-        lines.appendChild(row);
     }
 }
 

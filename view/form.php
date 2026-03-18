@@ -8,6 +8,7 @@
  * @var string|null $packName
  * @var array $lines
  * @var array $newCode
+ * @var bool $isNew
  */
 
 $this->start('default'); ?>
@@ -120,6 +121,7 @@ $this->start('default'); ?>
     <script src="<?=$this->fileCache("/js/generator.js") ?>" defer></script>
     <?php if(isset($lines)): ?>
         <script>
+            var isNew = <?=$isNew? 'true' : 'false' ?>;
             window.addEventListener('load', function () {
                 <?php foreach($lines as $line): ?>
                 addLine("<?= $line['name']?>", "<?= $line['type']?>", "<?= $line['min']?>", "<?= $line['max']?>", "<?= str_replace('"', '\"', $line['default'])?>" ,"<?= $line['public']?>");

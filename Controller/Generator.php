@@ -62,6 +62,7 @@ class Generator extends AbstractController
 
         $this->render('createpack', 'GeneratorPack', [
             'packForm' => $this->packForm->getForm(),
+            'isNew' => true
         ]);
     }
 
@@ -129,7 +130,8 @@ class Generator extends AbstractController
             'entityName' => $entityName ?: null,
             'entities' => $entities,
             'lines' => $data['lines'] ?? [],
-            'newCode' => $newCode ?? []
+            'newCode' => $newCode ?? [],
+            'isNew' => false
         ]);
     }
 }
