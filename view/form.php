@@ -107,7 +107,7 @@ $this->start('default'); ?>
         z-index: 99;
     }
 
-    .rows tr:hover {
+    .rows tr:has(input:focus) {
         background: black;
     }
 
