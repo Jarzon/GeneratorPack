@@ -443,6 +443,7 @@ class File
 
         if(file_exists($viewFile) || file_exists("{$modeDir}/index.php")) {
             $modeDir = "{$this->packDir}/view/{$this->entityNameLC}";
+            $viewFile = "$modeDir/form.php";
             $this->createDir($modeDir);
         }
 
