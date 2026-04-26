@@ -297,6 +297,10 @@ class File
             }
         }
 
+        $tableNameParts = explode('_', $this->tableName);
+
+        $migrationName = array_merge($tableNameParts, $migrationName);
+
         $file = $this->view->fetch('codeTemplates/phinxMigration', 'GeneratorPack', [
             'file' => $this,
             'isNew' => $isNew,
@@ -305,7 +309,7 @@ class File
 
         $name = implode('_', $migrationName);
 
-        $this->createFile($phinxDir . date('YmdHis') . "_{$this->tableName}_$name.php", $file);
+        $this->createFile($phinxDir . date('YmdHis') . "_$name.php", $file);
     }
 
     public function generateForm(bool $isNew = false): string|null
