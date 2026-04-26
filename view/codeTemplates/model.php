@@ -10,7 +10,7 @@ $entityFileTable = "{$file->entityName}Table";
 $select = [];
 
 foreach ($file->data as $row) {
-    if(!$row['public']) continue;
+    if(!$row['public'] || $row['status'] === '-1') continue;
 
     $select[] = "\$m->{$row['name']}" . ($row['type'] === 'text' && $row['default'] === 'null'? "->ifIsNull(\"''\")->alias('{$row['name']}')" : "");
 
