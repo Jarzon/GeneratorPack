@@ -62,7 +62,7 @@ foreach ($file->data as $row) {
         $isFullLine = true;
     }
     // deleted line
-    else if($row['status'] === '-1') {
+    else if($row['status'] === '-1' && !$isNew) {
         echo "            ->removeColumn('{$row['name']}'";
     }
 
