@@ -79,8 +79,8 @@ foreach ($file->data as $row) {
         if($row['type'] === 'currency' && !empty($row['min']) && !empty($row['max'])) {
             $integerNumber = (int)$row['min'];
             $decimalNumber = (int)$row['max'];
-            $scale = $integerNumber + $decimalNumber;
-            echo "'scale' => $scale, 'precision' => $decimalNumber, ";
+            $digitsNumber = $integerNumber + $decimalNumber;
+            echo "'precision' => $digitsNumber, 'scale' => $decimalNumber, ";
         }
         else if(!empty($row['max'])) {
             echo "'limit' => {$row['max']}, ";
