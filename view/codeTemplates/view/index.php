@@ -20,7 +20,7 @@ echo <<<EOT
 ?>
     <a class="buttonLink add" href="/{$file->entityNameLC}s/create"><?=\$_("create %s", "{$file->entityNameLC}")?></a>
 
-    <?php \$this->insert('table', 'TablePack', ['empty' => "you don't have any {$file->entityNameLC}s", 'type' => '{$file->tableName}']) ?>
+    <?php \$this->insert('table', 'TablePack', ['empty' => ["you don't have %s", "any {$file->entityNameLC}"], 'type' => '{$file->tableName}']) ?>
 
     <?php \$this->insert('sections/pagination', 'BasePack') ?>
 <?php \$this->end() ?>

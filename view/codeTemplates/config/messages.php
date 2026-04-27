@@ -12,5 +12,6 @@ echo <<<EOT
   "a $file->entityName": ["a $file->entityName", "un/une $file->entityName"],
   "the $file->entityName": ["the $file->entityName", "le/la $file->entityName"],
   "this $file->entityName": ["this $file->entityName", "cet/cette $file->entityName"],
+  "any $file->entityName": ["any $file->entityName", "un/une $file->entityName"],
 }
 EOT;
