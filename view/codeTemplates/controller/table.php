@@ -65,7 +65,7 @@ class Table extends AbstractController
 EOT;
 
 foreach ($file->data as $row) {
-    if($row['public'] === 'private') continue;
+    if($row['public'] === 'private' || $row['status'] === -1) continue;
 
     echo "            ->th('{$row['name']}')->order(\$t->{$row['name']})";
     if($row['type'] === 'string' || $row['type'] === 'text') echo "->escape()";
