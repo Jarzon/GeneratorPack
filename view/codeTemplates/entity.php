@@ -20,7 +20,7 @@ class {$file->entityName} extends EntityBase
 EOT;
 }
 foreach($file->data as $row):
-    if(!$isNew && $row['status'] !== '1' && $row['status'] !== '2') continue;
+    if((!$isNew && $row['status'] !== '1' && $row['status'] !== '2') || $row['status'] === '-1') continue;
     $type = $file->getColumnType($row['type']);
     ?>
     public <?=$type ?> $<?=$row['name'] ?>;
