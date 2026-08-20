@@ -54,7 +54,7 @@ class Table extends AbstractController
 
     public function index(int \$page = 1, bool \$showDeleted = false, string \$search = ''): void
     {
-        \$paginator = new Pagination(\$page, \$this->{$file->entityName}Model->getNumberOf{$file->entityName}s(), 13, 3);
+        \$pagination = new Pagination(\$page, \$this->{$file->entityName}Model->getNumberOf{$file->entityName}s(), 13, 3);
     
         \$t = new {$file->entityName}Table();
 
@@ -81,12 +81,12 @@ echo <<<EOT
                 \$table->addAction('modify', '/{$file->tableName}/edit/');
             }
 
-        \${$file->entityNameLC}s = \$this->{$file->entityName}Model->get{$file->entityName}s(\$paginator->getFirstPageElement(), \$paginator->getElementsPerPages(), \$table->getOrderColumn(), \$table->getOrder(), \$table->getOrderColumns(), \$showDeleted, \$search);
+        \${$file->entityNameLC}s = \$this->{$file->entityName}Model->get{$file->entityName}s(\$pagination, \$table, \$showDeleted, \$search);
 
         \$table->rows(\${$file->entityNameLC}s);
 
         \$this->render('index', '{$file->packName}Pack', [
-            'paginator' => \$paginator,
+            'paginator' => \$pagination,
             'table' => \$table,
             'showDeleted' => \$showDeleted,
             'searchTerm' => \$search,

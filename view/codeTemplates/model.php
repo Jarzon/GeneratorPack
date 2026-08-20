@@ -25,6 +25,8 @@ namespace {$file->targetPackNamespace}\Model;
 
 use Jarzon\QueryBuilder\Builder as QB;
 use Jarzon\QueryBuilder\Statements\Select;
+use PaginationPack\Service\Pagination;
+use {$file->options['project_name']}\TablePack\Service\Table;
 use {$file->targetPackNamespace}\Entity\\{$file->getEntityTableName()};
 use \PrimPack\Service\PDO;
 use Prim\Model;
@@ -94,11 +96,8 @@ class {$file->entityName}Model extends Model
         return (int)\$query->fetchColumn();
     }
 
-    /**
-     * @param array<mixed> \$columns
-     * @return array<mixed>|false
-     */
-    public function get{$file->entityName}s(int \$mtart, int \$numberOfElements, string \$orderField, string \$order, array \$columns, bool \$showDeleted = false, string \$search = ''): array|false
+    /** @return array<mixed>|false */
+    public function get{$file->entityName}s(Pagination \$pagination, Table \$table, bool \$showDeleted = false, string \$search = ''): array|false
     {
         \$m = new {$file->getEntityTableName()}();
 
@@ -107,13 +106,12 @@ class {$file->entityName}Model extends Model
             ->where(\$m->user_id, '=', \$this->user->id)
             ->whereRaw(\$m->status, '>=', 0)
             ->whereRaw(\$m->status, \$showDeleted? '=' : '>=', \$showDeleted? -1 : 0)
-            ->limit(\$mtart, \$numberOfElements);
+            ->limit(\$pagination->getFirstPageElement(), \$pagination->getElementsPerPages());
 
-        if(isset(\$columns[\$orderField])) {
-            \$query->orderBy(\$columns[\$orderField], \$order);
+        if(\$orderBy = \$table->getOrderByColumns()) {
+            \$query->orderBy(...\$orderBy);
         } else {
-            \$query
-                ->orderBy(\$m->status);
+            \$query->orderBy(\$m->name);
         }
 
         if(\$search !== '') {
