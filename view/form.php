@@ -11,6 +11,8 @@
  * @var bool $isNew
  */
 
+$title = $packName;
+
 $this->start('default'); ?>
     <?php foreach($newCode as $i => $code):
         if(trim($code) === '') continue;
