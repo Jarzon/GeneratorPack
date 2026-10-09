@@ -19,11 +19,41 @@ class DataForm extends FormAbstract
             ->repeat()
             ->text('name[]')
 
-            ->select('type[]')
+            ->select('value[]')
             ->addOptions([
-                'text' => 'text', 'textarea' => 'textarea', 'email' => 'email', 'url' => 'url', 'file' => 'file', 'tel' => 'tel', 'hidden' => 'hidden', 'color' => 'color', 'password' => 'password',
-                'number' => 'number', 'float' => 'float', 'range' => 'range', 'currency' => 'currency',
-                'datetime' => 'datetime', 'date' => 'date', 'time' => 'time'
+                'string' => 'string',
+                'text' => 'text',
+                'date' => 'date',
+                'datetime' => 'datetime',
+                'time' => 'time',
+                'decimal' => 'decimal',
+                'smallinteger' => 'smallinteger',
+                'integer' => 'integer',
+                'biginteger' => 'biginteger',
+            ])
+
+            ->select('input[]')
+            ->addOptions([
+                '' => '',
+                'text' => 'text',
+                'textarea' => 'textarea',
+                'select' => 'select',
+                'radio' => 'radio',
+                'checkbox' => 'checkbox',
+                'email' => 'email',
+                'url' => 'url',
+                'file' => 'file',
+                'tel' => 'tel',
+                'hidden' => 'hidden',
+                'color' => 'color',
+                'password' => 'password',
+                'number' => 'number',
+                'float' => 'float',
+                'range' => 'range',
+                'currency' => 'currency',
+                'datetime' => 'datetime',
+                'date' => 'date',
+                'time' => 'time'
              ])
 
             ->number('min[]')

@@ -3,10 +3,11 @@ let draggedRow;
 let draggedTextInputRow = false;
 let counter = 0;
 
-function generateRow(status = null, name = null, type = null, min = null, max = null, defaultValue = null, isPublic = null) {
+function generateRow(status = null, name = null, value = null, input = null, min = null, max = null, defaultValue = null, isPublic = null) {
     let baseRow = document.querySelector('#baseForm').cloneNode(true);
     let dragCell = baseRow.querySelector('.drag');
-    let typeSelect = baseRow.querySelector('.type');
+    let valueSelect = baseRow.querySelector('.value');
+    let inputTypeSelect = baseRow.querySelector('.input');
     let valueInput = baseRow.querySelector('.default');
     let minInput = baseRow.querySelector('.min');
     let maxInput = baseRow.querySelector('.max');
@@ -72,14 +73,14 @@ function generateRow(status = null, name = null, type = null, min = null, max = 
         if(statusInput.value !== '1') statusInput.value = '2';
     });
 
-    typeSelect.addEventListener('change', function () {
-        let type = this.value;
+    valueSelect.addEventListener('change', function () {
+        let valueType = this.value;
 
-        if (type === 'number') {
+        if (valueType === 'number') {
             valueInput.setAttribute('type', 'number');
             valueInput.value = '0';
         }
-        else if (type === 'datetime' || type === 'date') {
+        else if (valueType === 'datetime' || type === 'date') {
             valueInput.setAttribute('type', 'text');
             valueInput.value = 'CURRENT_TIMESTAMP';
         } else {
@@ -114,8 +115,12 @@ function generateRow(status = null, name = null, type = null, min = null, max = 
         baseRow.querySelector('.name').value = name;
     }
 
-    if(type !== null) {
-        typeSelect.value = type;
+    if(value !== null) {
+        valueSelect.value = value;
+    }
+
+    if(input !== null) {
+        inputTypeSelect.value = input;
     }
 
     if(min !== null) {
@@ -141,8 +146,8 @@ function generateRow(status = null, name = null, type = null, min = null, max = 
     return baseRow;
 }
 
-function addLine(name = null, type = null, min = null, max = null, defaultValue = null, isPublic = null, status = null) {
-    let row = generateRow(status, name, type, min, max, defaultValue, isPublic);
+function addLine(name = null, value = null, input = null, min = null, max = null, defaultValue = null, isPublic = null, status = null) {
+    let row = generateRow(status, name, value, input, min, max, defaultValue, isPublic);
 
     lines.appendChild(row);
 }

@@ -19,9 +19,8 @@ class {$file->entityName}Table extends EntityBase
 EOT;
 foreach($file->data as $row):
     if($row['status'] === '-1') continue;
-    $type = $file->getTableColumnType($row['type'], true);
     ?>
-    public <?=$type ?> $<?=$row['name'] ?>;
+    public <?=$file->getTableColumnType($row['value'], true) ?> $<?=$row['name'] ?>;
 <?php endforeach; ?>
 
     public function __construct(string $alias = '')
@@ -32,9 +31,8 @@ foreach($file->data as $row):
 
 <?php foreach($file->data as $row):
     if($row['status'] === '-1') continue;
-    $type = $file->getTableColumnType($row['type']);
     ?>
-        $this-><?=$row['name'] ?> = $this-><?=$type ?>('<?=$row['name'] ?>');
+        $this-><?=$row['name'] ?> = $this-><?=$file->getTableColumnType($row['value']) ?>('<?=$row['name'] ?>');
 <?php endforeach; ?>
     }
 }

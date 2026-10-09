@@ -21,7 +21,7 @@ EOT;
 }
 foreach($file->data as $row):
     if((!$isNew && $row['status'] !== '1' && $row['status'] !== '2') || $row['status'] === '-1') continue;
-    $type = $file->getColumnType($row['type']);
+    $type = $file->getColumnType($row['value']);
     ?>
     public <?=$type ?> $<?=$row['name'] ?>;
 <?php endforeach;

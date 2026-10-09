@@ -53,12 +53,12 @@ foreach ($file->data as $row) {
 
     // new line
     if($row['status'] === '1') {
-        echo "            ->addColumn('{$row['name']}', '{$columnsType[$row['type']]}'";
+        echo "            ->addColumn('{$row['name']}', '{$columnsType[$row['value']]}'";
         $isFullLine = true;
     }
     // updated line
     else if($row['status'] === '2') {
-        echo "            ->changeColumn('{$row['name']}', '{$columnsType[$row['type']]}'";
+        echo "            ->changeColumn('{$row['name']}', '{$columnsType[$row['value']]}'";
         $isFullLine = true;
     }
     // deleted line
@@ -70,13 +70,13 @@ foreach ($file->data as $row) {
         $isFullLine
         && (
             !empty($row['max'])
-            || $row['type'] === 'text'
+            || $row['value'] === 'text'
             || (isset($row['default']) && $row['default'] !== '')
         )
     ) {
         echo ', [';
 
-        if($row['type'] === 'currency' && !empty($row['min']) && !empty($row['max'])) {
+        if($row['value'] === 'decimal' && !empty($row['min']) && !empty($row['max'])) {
             $integerNumber = (int)$row['min'];
             $decimalNumber = (int)$row['max'];
             $digitsNumber = $integerNumber + $decimalNumber;
@@ -85,7 +85,7 @@ foreach ($file->data as $row) {
         else if(!empty($row['max'])) {
             echo "'limit' => {$row['max']}, ";
         }
-        if($row['type'] === 'text') {
+        if($row['value'] === 'text') {
             if($row['default'] === 'null') {
                 echo "'null' => true, ";
             } else {

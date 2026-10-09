@@ -25,7 +25,8 @@ $this->start('default'); ?>
             <tr id="baseForm" draggable="true">
                 <td class="drag"><img src="<?=$this->fileCache('/img/drag.svg') ?>" alt="="></td>
                 <td><?=$dataForm('name')->class('name')->row?></td>
-                <td><?=$dataForm('type')->class('type')->row?></td>
+                <td><?=$dataForm('value')->class('value')->row?></td>
+                <td><?=$dataForm('input')->class('input')->row?></td>
                 <td><?=$dataForm('min')->class('min')->row?></td>
                 <td><?=$dataForm('max')->class('max')->row?></td>
                 <td><?=$dataForm('default')->class('default')->row?></td>
@@ -65,7 +66,8 @@ $this->start('default'); ?>
                     <tr style="">
                         <th></th>
                         <th>Name</th>
-                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Input</th>
                         <th>Min</th>
                         <th>Max</th>
                         <th>Default</th>

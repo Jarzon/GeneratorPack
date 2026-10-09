@@ -180,9 +180,9 @@ class File
 
     public function getTableColumnType(string $type, bool $isType = false): string
     {
-        if (in_array($type, ['string', 'text', 'textarea', 'email', 'url', 'file', 'tel', 'hidden', 'color', 'password'])) {
+        if (in_array($type, ['string', 'text', 'currency'])) {
             $type = 'text';
-        } else if (in_array($type, ['number', 'float', 'range', 'currency'])) {
+        } else if (in_array($type, ['decimal', 'smallinteger', 'integer', 'biginteger'])) {
             $type = $isType? 'Numeric' : 'number';
         } else if (in_array($type, ['datetime', 'date', 'time'])) {
             $type = 'date';
@@ -197,10 +197,10 @@ class File
 
     public function getColumnType(string $type): string
     {
-        if (in_array($type, ['string', 'text', 'textarea', 'email', 'url', 'file', 'tel', 'hidden', 'color', 'password', 'datetime', 'date', 'time', 'currency'])) {
+        if (in_array($type, ['string', 'text', 'datetime', 'date', 'time', 'currency'])) {
             $type = 'string';
         }
-        else if (in_array($type, ['number', 'range'])) {
+        else if (in_array($type, ['decimal', 'smallinteger', 'integer', 'biginteger'])) {
             $type = 'int';
         }
 
@@ -332,7 +332,7 @@ class File
     /** @param array<mixed> $row */
     public function generateFormLine(array $row): string
     {
-        $type = $row['type'];
+        $type = $row['input'];
 
         if($type === 'datetime') {
             $type = 'text';
@@ -340,7 +340,7 @@ class File
 
         $file = "            ->{$type}('{$row['name']}')\n";
 
-        if(!empty($row['max']) || $row['type'] === 'string'  || $row['type'] === 'text' || isset($row['default'])) {
+        if(!empty($row['max']) || $row['input'] === 'string' || $row['input'] === 'text' || isset($row['default'])) {
             if(!empty($row['min'])) {
                 $file .= "            ->min({$row['min']})\n";
             }

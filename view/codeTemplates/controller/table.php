@@ -68,7 +68,7 @@ foreach ($file->data as $row) {
     if($row['public'] === 'private' || $row['status'] === -1) continue;
 
     echo "            ->th('{$row['name']}')->order(\$t->{$row['name']})";
-    if($row['type'] === 'string' || $row['type'] === 'text') echo "->escape()";
+    if($row['value'] === 'string' || $row['value'] === 'text') echo "->escape()";
     echo "\n";
 }
 
