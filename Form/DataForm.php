@@ -30,10 +30,12 @@ class DataForm extends FormAbstract
             ->number('max[]')
             ->text('default[]')
 
-            ->select('public[]')
+            ->radio('public[]')
                 ->addOptions([
-                    'private' => 'private', 'public' => 'public'
+                    'private' => 'private',
+                    'public' => 'public'
                 ])
+                ->value('private')
             ->required()
 
             ->hidden('status[]')
