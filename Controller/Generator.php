@@ -24,16 +24,16 @@ class Generator extends AbstractController
 
     public function index(): void
     {
-        $root = $this->options['root'] . 'src/';
+        $src = $this->options['root'] . 'src/';
 
-        $packs = glob("$root*");
+        $packs = glob("$src*");
 
         if($packs === false) {
-            throw new \Exception("Impossible d'accèder au dossier src/");
+            throw new \Exception("Unable to access the src/ directory at: $src");
         }
 
         foreach ($packs as $index => $dir) {
-            $packs[$index] = str_replace($root, '', $dir);
+            $packs[$index] = str_replace($src, '', $dir);
         }
 
         $this->render('index', 'GeneratorPack', [
