@@ -7,25 +7,6 @@ declare(strict_types=1);
  * @var array $migrationName
  */
 
-$columnsType = [
-    'text' => 'string',
-    'textarea' => 'text',
-    'number' => 'integer',
-    'float' => 'float',
-    'range' => 'number',
-    'currency' => 'decimal',
-    'date' => 'datetime',
-    'datetime' => 'datetime',
-    'time' => 'time',
-    'email' => 'string',
-    'url' => 'string',
-    'file' => 'string',
-    'tel' => 'string',
-    'hidden' => 'string',
-    'color' => 'string',
-    'password' => 'string',
-];
-
 $className = implode('', array_map(fn($s) => ucfirst($s), $migrationName));
 
 echo <<<EOT
@@ -53,12 +34,12 @@ foreach ($file->data as $row) {
 
     // new line
     if($row['status'] === '1') {
-        echo "            ->addColumn('{$row['name']}', '{$columnsType[$row['value']]}'";
+        echo "            ->addColumn('{$row['name']}', '{$row['value']}'";
         $isFullLine = true;
     }
     // updated line
     else if($row['status'] === '2') {
-        echo "            ->changeColumn('{$row['name']}', '{$columnsType[$row['value']]}'";
+        echo "            ->changeColumn('{$row['name']}', '{$row['value']}'";
         $isFullLine = true;
     }
     // deleted line
