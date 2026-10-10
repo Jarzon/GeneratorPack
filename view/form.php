@@ -128,7 +128,7 @@ $this->start('default'); ?>
             var isNew = <?=$isNew? 'true' : 'false' ?>;
             window.addEventListener('load', function () {
                 <?php foreach($lines as $line): ?>
-                addLine("<?= $line['name']?>", "<?= $line['type']?>", "<?= $line['min']?>", "<?= $line['max']?>", "<?= str_replace('"', '\"', $line['default'])?>" ,"<?= $line['public']?>");
+                addLine("<?= $line['name']?>", "<?= $line['value']?>", "<?= $line['input']?>", "<?= $line['min']?>", "<?= $line['max']?>", "<?= str_replace('"', '\"', $line['default'])?>" ,"<?= $line['public']?>");
                 <?php endforeach; ?>
             });
         </script>
