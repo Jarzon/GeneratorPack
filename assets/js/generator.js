@@ -76,16 +76,25 @@ function generateRow(status = null, name = null, value = null, input = null, min
     valueSelect.addEventListener('change', function () {
         let valueType = this.value;
 
-        if (valueType === 'number') {
-            valueInput.setAttribute('type', 'number');
+        if (valueType === 'string') {
+            inputTypeSelect.value = 'text';
+            valueInput.value = '';
+        }
+        else if (valueType === 'text') {
+            inputTypeSelect.value = 'textarea';
+            valueInput.value = '';
+        }
+        else if (valueType === 'datetime' || valueType === 'date' || valueType === 'time') {
+            inputTypeSelect.value = valueType;
+            valueInput.value = 'CURRENT_TIMESTAMP';
+        }
+        else if (valueType === 'decimal') {
+            inputTypeSelect.value = 'currency';
             valueInput.value = '0';
         }
-        else if (valueType === 'datetime' || valueType === 'date') {
-            valueInput.setAttribute('type', 'text');
-            valueInput.value = 'CURRENT_TIMESTAMP';
-        } else {
-            valueInput.setAttribute('type', 'text');
-            valueInput.value = '';
+        else if (valueType === 'smallinteger' || valueType === 'integer' || valueType === 'biginteger') {
+            inputTypeSelect.value = 'number';
+            valueInput.value = '0';
         }
     });
 
