@@ -80,7 +80,7 @@ function generateRow(status = null, name = null, value = null, input = null, min
             valueInput.setAttribute('type', 'number');
             valueInput.value = '0';
         }
-        else if (valueType === 'datetime' || type === 'date') {
+        else if (valueType === 'datetime' || valueType === 'date') {
             valueInput.setAttribute('type', 'text');
             valueInput.value = 'CURRENT_TIMESTAMP';
         } else {
