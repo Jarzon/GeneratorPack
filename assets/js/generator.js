@@ -155,7 +155,7 @@ function addLine(name = null, value = null, input = null, min = null, max = null
 let lineCounter = 0;
 
 function addNewLine() {
-    let row = generateRow(1, null, null, null, null, null, 'public');
+    let row = generateRow(1, null, null, null, null, null, '', 'public');
 
     if(lines.children.length < 1 || !isNew) {
         lines.appendChild(row);
