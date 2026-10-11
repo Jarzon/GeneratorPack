@@ -136,7 +136,8 @@ function generateRow(status = null, name = null, value = null, input = null, min
     }
 
     if(isPublic !== null) {
-        baseRow.querySelector('.public').value = isPublic;
+        let radio = baseRow.querySelector(`.public[value="${isPublic}"]`);
+        radio.checked = true;
     }
 
     if(status !== null) {
