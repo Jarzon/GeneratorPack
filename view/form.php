@@ -18,8 +18,9 @@ $this->start('default'); ?>
         if(trim($code) === '') continue;
     ?>
         <div>
-            <h3><?=$i ?></h3>
-            <pre><?=htmlentities($code) ?></pre>
+            <a class="filePath" href="<?=$this->options['debug_link'].$i ?>" onclick="navigator.clipboard.writeText(<?=htmlentities($code) ?>)"><?=$i ?></a>
+            <button onclick="this.parentNode.lastElementChild.focus();this.parentNode.lastElementChild.select();document.execCommand('copy');">Copy</button>
+            <textarea class="code"><?=htmlentities($code) ?></textarea>
         </div>
     <?php endforeach; ?>
     <div class="box">
@@ -118,21 +119,37 @@ $this->start('default'); ?>
     .drag {
         cursor: grab;
     }
+
+    .filePath {
+        display: inline-block;
+        font-size: 25px;
+        margin: 10px;
+    }
+
+    .code {
+        display: block;
+        border: 1px solid #eee;
+        padding: 10px;
+        color: #fff;
+        background: #000;
+        field-sizing: content;
+        height: inherit;
+    }
 </style>
 <?php $this->end() ?>
 
 <?php $this->start('js') ?>
     <script src="<?=$this->fileCache("/js/generator.js") ?>" defer></script>
-    <?php if(isset($lines)): ?>
-        <script>
-            var isNew = <?=$isNew? 'true' : 'false' ?>;
-            window.addEventListener('load', function () {
-                <?php foreach($lines as $line): ?>
-                addLine("<?= $line['name']?>", "<?= $line['value']?>", "<?= $line['input']?>", "<?= $line['min']?>", "<?= $line['max']?>", "<?= str_replace('"', '\"', $line['default'])?>" ,"<?= $line['public']?>");
-                <?php endforeach; ?>
-            });
-        </script>
-    <?php endif; ?>
+    <script>
+        <?php if(isset($lines)): ?>
+        var isNew = <?=$isNew? 'true' : 'false' ?>;
+        window.addEventListener('load', function () {
+            <?php foreach($lines as $line): ?>
+            addLine("<?= $line['name']?>", "<?= $line['value']?>", "<?= $line['input']?>", "<?= $line['min']?>", "<?= $line['max']?>", "<?= str_replace('"', '\"', $line['default'])?>" ,"<?= $line['public']?>");
+            <?php endforeach; ?>
+        });
+        <?php endif; ?>
+    </script>
 <?php $this->end(); ?>
 
 <?php $this->insert('include', 'GeneratorPack'); ?>

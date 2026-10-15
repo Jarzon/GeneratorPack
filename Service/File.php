@@ -26,7 +26,7 @@ class File
         ];
     }
 
-    public function setPack(string $packName): void
+    public function setPack(string $packName): string
     {
         if(!str_contains($packName, 'Pack')) {
             $packName = $packName . 'Pack';
@@ -36,6 +36,8 @@ class File
         $this->packDir = $this->options['root'] . 'src/' . $packName;
         $this->packName = $packName;
         $this->targetPackNamespace = "{$this->options['project_name']}\\{$packName}";
+
+        return $packName;
     }
 
     public function setEntity(string $entityName, string $tableName, bool $crud): void

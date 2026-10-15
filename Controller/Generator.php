@@ -68,7 +68,7 @@ class Generator extends AbstractController
 
     public function modify(string $packName, string|null $entityName = null, int $recreate = 0): void
     {
-        $this->file->setPack($packName);
+        $packName = $this->file->setPack($packName);
 
         $data = $entityName !== null? $this->file->getEntityStruct($packName, $entityName) : [];
 
@@ -78,6 +78,8 @@ class Generator extends AbstractController
         }
 
         if($entityName !== null) $this->file->setEntity($entityName, $data['tableName'], $data['crud'] ?? true);
+
+        $newCode = [];
 
         if($this->dataForm->submitted()) {
             try {
@@ -121,6 +123,17 @@ class Generator extends AbstractController
             }
         }
 
+        $routingFile = file_get_contents("{$this->options['root']}app/config/routing.php");
+        $serviceFile = file_get_contents("{$this->options['root']}app/config/services.php");
+
+        if(!str_contains($routingFile, $packName)) {
+            $newCode["app/config/routing.php"] = "->registerRoutes('$packName', 'routing.php')";
+        }
+
+        if(!str_contains($serviceFile, $packName)) {
+            $newCode["app/config/services.php"] = "->registerServices('$packName')";
+        }
+
         $entities = array_keys($this->file->getPackStruct($packName) ?: []);
 
         $this->render('form', 'GeneratorPack', [
@@ -130,7 +143,7 @@ class Generator extends AbstractController
             'entityName' => $entityName ?: null,
             'entities' => $entities,
             'lines' => $data['lines'] ?? [],
-            'newCode' => $newCode ?? [],
+            'newCode' => $newCode,
             'isNew' => false
         ]);
     }
