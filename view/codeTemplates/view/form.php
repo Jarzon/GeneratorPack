@@ -30,7 +30,7 @@ EOT;
 }
 
 foreach ($file->data as $row) {
-    if($row['public'] === 'private' || $row['status'] === '-1' || $row['status'] === '0') continue;
+    if($row['public'] === 'private' || $row['status'] === '-1' || $row['status'] === '0' || $row['input'] === '') continue;
 
     echo "<div class=\"listForm\"><?=\$form('{$row['name']}')->label(\$_('{$row['name']}'))->row?></div>
             ";
