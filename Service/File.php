@@ -171,9 +171,9 @@ class File
         $this->generatePhinx();
 
         $array = [
-            'entity' => $this->generateEntity(),
-            'form class' => $this->generateForm(),
-            'form view' => $this->createCRUD? $this->generateFormView() : '',
+            "src/$this->packDir/Entity/$this->entityName.php" => $this->generateEntity(),
+            "src/$this->packDir/Form/{$this->entityName}Form.php" => $this->generateForm(),
+            "src/$this->packDir/view/form.php" => $this->createCRUD? $this->generateFormView() : '',
         ];
 
         $this->savePackStruct();
