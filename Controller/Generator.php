@@ -126,11 +126,11 @@ class Generator extends AbstractController
         $routingFile = file_get_contents("{$this->options['root']}app/config/routing.php");
         $serviceFile = file_get_contents("{$this->options['root']}app/config/services.php");
 
-        if(!str_contains($routingFile, $packName)) {
+        if(!str_contains($routingFile, $packName) && file_exists("{$this->options['root']}src/$packName/config/routing.php")) {
             $newCode["app/config/routing.php"] = "->registerRoutes('$packName', 'routing.php')";
         }
 
-        if(!str_contains($serviceFile, $packName)) {
+        if(!str_contains($serviceFile, $packName) && file_exists("{$this->options['root']}src/$packName/config/services.php")) {
             $newCode["app/config/services.php"] = "->registerServices('$packName')";
         }
 
