@@ -13,7 +13,6 @@ foreach ($file->data as $row) {
     if(!$row['public'] || $row['status'] === '-1') continue;
 
     $select[] = "\$m->{$row['name']}" . ($row['value'] === 'text' && $row['default'] === 'null'? "->ifIsNull(\"''\")->alias('{$row['name']}')" : "");
-
 }
 
 $orderColumn = $select[0];

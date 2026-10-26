@@ -85,7 +85,7 @@ echo <<<EOT
 
         \$table->rows(\${$file->entityNameLC}s);
 
-        \$this->render('index', '{$file->packName}Pack', [
+        \$this->render('index', '{$file->packName}', [
             'paginator' => \$pagination,
             'table' => \$table,
             'showDeleted' => \$showDeleted,
