@@ -16,6 +16,8 @@ foreach ($file->data as $row) {
 
 }
 
+$orderColumn = $select[0];
+
 $selectColumns = implode(', ', $select);
 
 echo <<<EOT
@@ -111,7 +113,7 @@ class {$file->entityName}Model extends Model
         if(\$orderBy = \$table->getOrderByColumns()) {
             \$query->orderBy(...\$orderBy);
         } else {
-            \$query->orderBy(\$m->name);
+            \$query->orderBy(\$m->{$orderColumn});
         }
 
         if(\$search !== '') {
