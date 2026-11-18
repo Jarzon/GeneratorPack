@@ -27,6 +27,7 @@ class DataForm extends FormAbstract
                     'datetime' => 'datetime',
                     'time' => 'time',
                     'decimal' => 'decimal',
+                    'tinyinteger' => 'tinyinteger',
                     'smallinteger' => 'smallinteger',
                     'integer' => 'integer',
                     'biginteger' => 'biginteger',

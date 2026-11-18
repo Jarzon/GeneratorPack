@@ -184,7 +184,7 @@ class File
     {
         if (in_array($type, ['string', 'text', 'currency'])) {
             $type = 'text';
-        } else if (in_array($type, ['decimal', 'smallinteger', 'integer', 'biginteger'])) {
+        } else if (in_array($type, ['decimal', 'tinyinteger', 'smallinteger', 'integer', 'biginteger'])) {
             $type = $isType? 'Numeric' : 'number';
         } else if (in_array($type, ['datetime', 'date', 'time'])) {
             $type = 'date';
@@ -202,7 +202,7 @@ class File
         if (in_array($type, ['string', 'text', 'datetime', 'date', 'time', 'currency'])) {
             $type = 'string';
         }
-        else if (in_array($type, ['decimal', 'smallinteger', 'integer', 'biginteger'])) {
+        else if (in_array($type, ['decimal', 'tinyinteger', 'smallinteger', 'integer', 'biginteger'])) {
             $type = 'int';
         }
 

@@ -82,7 +82,7 @@ function generateRow(status = null, name = null, value = null, input = null, min
             inputTypeSelect.value = 'currency';
             valueInput.value = '0';
         }
-        else if (valueType === 'smallinteger' || valueType === 'integer' || valueType === 'biginteger') {
+        else if (valueType.includes('integer')) {
             inputTypeSelect.value = 'number';
             valueInput.value = '0';
             if(maxInput.value === '0' || maxInput.value === '') {
