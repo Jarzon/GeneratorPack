@@ -35,7 +35,7 @@ if($isNew): ?>
 
 <?php endif;
 foreach ($file->data as $row) {
-    if($row['public'] === 'private' || (!$isNew && $row['status'] !== '1' && $row['status'] !== '2')) continue;
+    if($row['public'] === 'private' || $row['input'] === '' || (!$isNew && $row['status'] !== '1' && $row['status'] !== '2')) continue;
 
     echo $file->generateFormLine($row);
 }
@@ -49,7 +49,7 @@ if($isNew): ?>
 <?php
 endif;
 foreach ($file->data as $row) {
-    if($row['public'] === 'public' || (!$isNew && $row['status'] !== '1' && $row['status'] !== '2')) continue;
+    if($row['public'] === 'public' || $row['input'] === '' || (!$isNew && $row['status'] !== '1' && $row['status'] !== '2')) continue;
 
     echo $file->generateFormLine($row);
 }

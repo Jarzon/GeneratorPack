@@ -20,53 +20,53 @@ class DataForm extends FormAbstract
             ->text('name[]')
 
             ->select('value[]')
-            ->addOptions([
-                'string' => 'string',
-                'text' => 'text',
-                'date' => 'date',
-                'datetime' => 'datetime',
-                'time' => 'time',
-                'decimal' => 'decimal',
-                'smallinteger' => 'smallinteger',
-                'integer' => 'integer',
-                'biginteger' => 'biginteger',
-            ])
+                ->addOptions([
+                    'string' => 'string',
+                    'text' => 'text',
+                    'date' => 'date',
+                    'datetime' => 'datetime',
+                    'time' => 'time',
+                    'decimal' => 'decimal',
+                    'smallinteger' => 'smallinteger',
+                    'integer' => 'integer',
+                    'biginteger' => 'biginteger',
+                ])
 
             ->select('input[]')
-            ->addOptions([
-                '' => '',
-                'text' => 'text',
-                'textarea' => 'textarea',
-                'select' => 'select',
-                'radio' => 'radio',
-                'checkbox' => 'checkbox',
-                'email' => 'email',
-                'url' => 'url',
-                'file' => 'file',
-                'tel' => 'tel',
-                'hidden' => 'hidden',
-                'color' => 'color',
-                'password' => 'password',
-                'number' => 'number',
-                'float' => 'float',
-                'range' => 'range',
-                'currency' => 'currency',
-                'datetime' => 'datetime',
-                'date' => 'date',
-                'time' => 'time'
-             ])
+                ->addOptions([
+                    '' => '',
+                    'text' => 'text',
+                    'textarea' => 'textarea',
+                    'select' => 'select',
+                    'radio' => 'radio',
+                    'checkbox' => 'checkbox',
+                    'email' => 'email',
+                    'url' => 'url',
+                    'file' => 'file',
+                    'tel' => 'tel',
+                    'hidden' => 'hidden',
+                    'color' => 'color',
+                    'password' => 'password',
+                    'number' => 'number',
+                    'float' => 'float',
+                    'range' => 'range',
+                    'currency' => 'currency',
+                    'datetime' => 'datetime',
+                    'date' => 'date',
+                    'time' => 'time'
+                ])
 
             ->number('min[]')
-            ->number('max[]')
-            ->text('default[]')
+                ->number('max[]')
+                ->text('default[]')
 
-            ->radio('public[]')
+            ->select('public[]')
                 ->addOptions([
                     'private' => 'private',
                     'public' => 'public'
                 ])
                 ->value('private')
-            ->required()
+                ->required()
 
             ->hidden('status[]')
                 ->value(0)

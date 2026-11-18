@@ -1,7 +1,6 @@
 let lines = document.querySelector('#lines');
 let draggedRow;
 let draggedTextInputRow = false;
-let counter = 0;
 
 function generateRow(status = null, name = null, value = null, input = null, min = null, max = null, defaultValue = null, isPublic = null) {
     let baseRow = document.querySelector('#baseForm').cloneNode(true);
@@ -12,18 +11,9 @@ function generateRow(status = null, name = null, value = null, input = null, min
     let minInput = baseRow.querySelector('.min');
     let maxInput = baseRow.querySelector('.max');
     let statusInput = baseRow.querySelector('.status');
-    let publicRadios = baseRow.querySelectorAll('.public');
+    let publicSelect = baseRow.querySelector('.public');
     let dragIcon = document.createElement('img');
     dragIcon.src = '/img/verification.svg';
-
-    for(let radio of publicRadios) {
-        let newRadioId = radio.id + '_' + counter;
-        radio.nextElementSibling.htmlFor = newRadioId;
-        radio.id = newRadioId;
-        radio.name = `public[${counter}]`
-    }
-
-    counter++;
 
     baseRow.addEventListener('mousedown', function (e) {
         if(e.target) return;
@@ -145,8 +135,7 @@ function generateRow(status = null, name = null, value = null, input = null, min
     }
 
     if(isPublic !== null) {
-        let radio = baseRow.querySelector(`.public[value="${isPublic}"]`);
-        radio.checked = true;
+        publicSelect.value = isPublic;
     }
 
     if(status !== null) {

@@ -46,7 +46,7 @@ class Form extends AbstractController
             }
         }
 
-        \$this->render('form', '{$file->entityName}Pack', [
+        \$this->render('form', '{$file->packName}', [
             'form' => \$this->{$file->entityName}Form->getForm(),
             '{$file->entityNameLC}' => new class{},
             'new' => true
