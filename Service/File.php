@@ -177,9 +177,9 @@ class File
         $this->generatePhinx();
 
         $array = [
-            "src/$this->packDir/Entity/$this->entityName.php" => $this->generateEntity(),
-            "src/$this->packDir/Form/{$this->entityName}Form.php" => $this->generateForm(),
-            "src/$this->packDir/view/form.php" => $this->createCRUD? $this->generateFormView() : '',
+            "$this->packDir/Entity/$this->entityName.php" => $this->generateEntity(),
+            "$this->packDir/Form/{$this->entityName}Form.php" => $this->generateForm(),
+            "$this->packDir/view/form.php" => $this->createCRUD? $this->generateFormView() : '',
         ];
 
         $this->savePackStruct();
