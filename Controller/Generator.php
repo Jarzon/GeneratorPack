@@ -33,7 +33,11 @@ class Generator extends AbstractController
         }
 
         foreach ($packs as $index => $dir) {
-            $packs[$index] = str_replace($src, '', $dir);
+            $packName = str_replace($src, '', $dir);
+            $packs[$index] = [
+                'name' => $packName,
+                'struct' => $this->file->getEntityStructOverview($packName) ?: []
+            ];
         }
 
         $this->render('index', 'GeneratorPack', [

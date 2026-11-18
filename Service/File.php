@@ -51,6 +51,12 @@ class File
     }
 
     /** @return array<mixed>|false */
+    public function getEntityStructOverview(string $packName): array|false
+    {
+        return $this->getPackStruct($packName);
+    }
+
+    /** @return array<mixed>|false */
     public function getEntityStruct(string $packName, string $entityName): array|false
     {
         if($data = $this->getPackStruct($packName)) {
