@@ -85,6 +85,20 @@ function generateRow(status = null, name = null, value = null, input = null, min
         else if (valueType === 'smallinteger' || valueType === 'integer' || valueType === 'biginteger') {
             inputTypeSelect.value = 'number';
             valueInput.value = '0';
+            if(maxInput.value === '0' || maxInput.value === '') {
+                if(valueType === 'tinyinteger') {
+                    maxInput.value = '32767'
+                }
+                else if(valueType === 'smallinteger') {
+                    maxInput.value = '32767'
+                }
+                else if(valueType === 'integer') {
+                    maxInput.value = '2147483647'
+                }
+                else if(valueType === 'biginteger') {
+                    maxInput.value = '9223372036854775807'
+                }
+            }
         }
     });
 
